@@ -1,0 +1,43 @@
+﻿@using HCL.Academy.Model;
+@using HCLAcademy.Utility;
+@model List<HCL.Academy.Model.UserTrainingDetail>
+<div>
+    <div class="headerOne">
+        SKILL BASED TRAINING
+        <a class="seeMoreNew" href='@Url.Action("TrainingPlan", "TrainingPlan")'>See More</a>
+    </div>
+    <ul class="list-group">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            if (i == 4) { break; }
+        <li class="list-group-item">
+            @if (@Model[i].IsLink)
+            {<a onclick="popupExternalContent('@Model[i].LinkUrl', 'best window',1000,550);" href="javascript:void(0);">
+                    @Model[i].TrainingName
+                </a>
+            }
+            else
+            { <a target="_self" href="@Url.Action("DownloadFile", "Home",new { filePath = EncryptionHelper.Encrypt(Model[i].DocumentUrl)  })">
+                    @Model[i].TrainingName
+                </a>
+            }
+            @if(Model[i].AdminApprovalStatus != null)
+            {
+                if (Model[i].AdminApprovalStatus.Length > 0)
+                {
+                    <div>@Model[i].AdminApprovalStatus</div>
+                }
+            }
+
+        </li>
+        }
+    </ul>
+</div>
+<script>
+    function popupExternalContent(url, title, w, h) {
+        var left = (screen.width / 2) - (w / 2);
+        var top = (screen.height / 2) - (h / 2);
+        return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    }
+
+</script>

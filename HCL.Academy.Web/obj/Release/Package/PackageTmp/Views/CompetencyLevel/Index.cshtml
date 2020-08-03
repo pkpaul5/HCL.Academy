@@ -1,0 +1,25 @@
+﻿@model IEnumerable<HCL.Academy.Model.Competence>
+<table class="table table-bordered table-striped">
+    <thead style="background-color:#326295;color:#fff">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CompetenceName)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompetenceName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CompetenceId,level=item.CompetenceName }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CompetenceId, level = item.CompetenceName })
+                </td>
+            </tr>
+        }
+
+</table>

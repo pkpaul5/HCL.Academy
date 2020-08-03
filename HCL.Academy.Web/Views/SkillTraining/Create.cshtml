@@ -1,0 +1,137 @@
+﻿@model HCL.Academy.Model.SkillTraining
+
+@{
+    ViewBag.Title = "Create";
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <ul class="breadcrumb">
+            <li>@Html.ActionLink("Skill Training List", "Index")</li>
+            <li class="active">Add Skill Training</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-12"><h2>Add a Training</h2></div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.selectedSkill, "Skill", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.selectedSkill, new SelectList(Model.skills, "SkillId", "SkillName"), "Please Select Skill", new { @id = "ddSkillForAssmnt", @class = "form-control", @onchange = "FillCompetencePopup()" })
+                        @Html.ValidationMessageFor(model => model.selectedSkill, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.selectedCompetence, "Competence", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.selectedCompetence, new SelectList(Model.competences, "CompetenceId", "CompetenceName"), "Please select a Level", new { @id = "ddCompetanceForAssmnt", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedCompetence, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.selectedTraining, "Training", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.selectedTraining, new SelectList(Model.trainings, "ID", "Title"), "Please select a Training", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedTraining, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.selectedGEO, "GEO", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.selectedGEO, new SelectList(Model.GEOs, "Id", "Title"), "Please select a GEO", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedGEO, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.points, "Points", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.points, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.points, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.isMandatory, "Mandatory", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="checkbox" style="padding-left:20px">
+                            @Html.EditorFor(model => model.isMandatory)
+                            @Html.ValidationMessageFor(model => model.isMandatory, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.isAssessmentRequired, "Assessment Required", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="checkbox" style="padding-left:20px">
+                            @Html.EditorFor(model => model.isAssessmentRequired)
+                            @Html.ValidationMessageFor(model => model.isAssessmentRequired, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+    </section>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+
+    function FillCompetencePopup() {
+        var skillId = $('#ddSkillForAssmnt').val();
+        $.ajax({
+            url: "/Admin/FillCompetence",
+            type: "GET",
+            dataType: "JSON",
+            data: { Id: skillId },
+            success: function (competencies) {
+                $("#ddCompetanceForAssmnt").html(""); // clear before appending new list
+                $("#ddCompetanceForAssmnt").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+                $.each(competencies, function (i, competence) {
+
+                    $("#ddCompetanceForAssmnt").append(
+
+                        $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                });
+            }
+        });
+    }
+</script>

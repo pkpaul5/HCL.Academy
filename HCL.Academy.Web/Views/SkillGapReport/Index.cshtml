@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@using HCL.Academy.Model;
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row form-group"><div class="col-md-12"><h2>Skill Gap Report</h2></div></div>
+        <div class="row form-group">            
+            <div class="col-md-1">Role</div>
+            <div class="col-md-3 pull-left">
+                <select id="ddRoleReport" class="form-control">
+                    <option value="0">Please select a Role</option>
+                    @foreach (Role role in ViewBag.Roles)
+                    {
+                        <option value=@role.Id>@role.Title</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button onclick="GetSkillGapReport()" class="sta-adminbt">Get Report</button>
+                    <button onclick="Download()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="dvReport">
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    function GetSkillGapReport() {
+
+        if ($("#ddRoleReport")[0].selectedIndex == 0 || $("#ddRoleReport")[0].selectedIndex == 0) {
+            alert('Please select a role');
+            return;
+        }
+        var selectedRole = $("#ddRoleReport").val();
+        
+        var PostData = {
+            roleID: selectedRole,            
+        };
+        $.ajax({
+            type: "POST",
+            url: "/SkillGapReport/GetSkillGapReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                $('#dvReport').html(result);
+            }
+        });
+    }
+
+    function Download()
+    {
+      var role = $("#ddRoleReport").val();
+      var url = '@Url.Action("DownloadReportToExcel", "SkillGapReport")?roleID=' + role;
+      $.get("/Admin/FakeAjaxCall", function () { window.location.href = url; }).done(function () {
+             window.setTimeout(function () { $('#myModal').modal('hide'); }, 2000);
+         });
+    }
+</script>

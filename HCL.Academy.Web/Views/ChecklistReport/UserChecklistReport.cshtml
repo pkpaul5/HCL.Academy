@@ -1,0 +1,32 @@
+﻿@model IEnumerable<HCL.Academy.Model.UserChecklistReportItem>
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table class="table table-bordered admin-onbrdtble" id="onboard-data-table">
+            <thead>
+                <tr>
+                    <th style="vertical-align:top">Name</th>
+                    <th style="vertical-align:top">Email</th>
+                    <th style="vertical-align:top">EmployeeID</th>
+                    <th style="vertical-align:top">CheckListItem</th>
+                    <th style="vertical-align:top">Completed</th>
+                    <th style="vertical-align:top">Onboarding Date</th>
+                    <th style="vertical-align:top">Completion Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.EmailAddress</td>
+                    <td>@item.EmployeeID</td>
+                    <td>@item.CheckListItem</td>
+                    <td>@item.CheckListStatus</td>
+                    <td>@item.OnboardingDate</td>
+                    <td>@item.CompletionDate</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

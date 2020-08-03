@@ -1,0 +1,71 @@
+﻿@using HCL.Academy.Model;
+@model List<AcademyJoinersCompletion>
+
+<div>
+    <div class="headerOne">
+        ASSESSMENT
+        <a class="seeMoreNew" href='@Url.Action("Index", "UserAssessment")'>See More</a>
+    </div>
+    <ul class="list-group">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            if (i == 4) { break; }
+            <li class="list-group-item">
+                @if (Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")) <= Convert.ToInt32(Model[i].lastDayCompletion.ToString("yyyyMMdd")) && Model[i].attempts < Model[i].maxAttempts)
+                {
+                    if (@Model[i].isTrainingLink)
+                    {
+                        <a href="@Model[i].trainingLink" rel="noopener noreferrer" target="_blank">@Model[i].trainingAssessmentLookUpText</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index", "Assessment",new { id = Model[i].id })" data-singleton="true">
+                            @Model[i].trainingAssessmentLookUpText
+                        </a>
+                    }
+                }
+                else
+                {
+
+                    if (Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")) > Convert.ToInt32(Model[i].lastDayCompletion.ToString("yyyyMMdd")))
+                    {
+                        if (Model[i].isTrainingLink)
+                        {
+                            <a href="@Model[i].trainingLink" rel="noopener noreferrer"  target="_blank">@Model[i].trainingAssessmentLookUpText</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Assessment",new { id = Model[i].id })"  target="_blank" onclick="javascript:return false;" title="Due Date Passed">
+                                @Model[i].trainingAssessmentLookUpText
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        if (Model[i].isTrainingLink)
+                        {
+                            <a href="@Model[i].trainingLink" rel="noopener noreferrer"  target="_blank" ><i class="fa fa-play"></i></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Assessment",new { id = Model[i].id })" rel="noopener noreferrer"   target="_blank" onclick="javascript:return false;" title="Maximum Attempts exceeded">
+                                <i class="fa fa-play" aria-hidden="true"></i>
+                            </a>
+                        }
+                    }
+                }
+                <div class="pull-right">
+                    @if (Model[i].assessmentStatus.ToString().ToUpper() == "TRUE")
+                    {<span>Done</span>
+                    }
+                    else
+                    {
+                        <span>WIP</span>
+                    }
+
+                </div>
+            </li>
+
+        }
+    </ul>
+</div>

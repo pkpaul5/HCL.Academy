@@ -1,0 +1,116 @@
+﻿@model  IEnumerable<HCL.Academy.Model.Project>
+@using HCL.Academy.Model;
+@{
+    ViewBag.Title = "ManageChildProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+    <section id="tabs" class="content-wrapper main-content clear-fix container">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li>@Html.ActionLink("First Level Project Management", "Index", "FirstLevelProject")</li>
+                <li class="active">Second Level Project Management</li>
+            </ul>
+            <div class="row"><div class="col-md-12"><h2>Second Level Project Management - Manage Child Project</h2></div></div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    Project Name
+                </div>
+                <div class="col-md-3">
+                    <div><label>@ViewBag.ProjectName</label></div>
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">Add Child Project</div>
+                <div class="col-md-3"><input type="text" id="txtProjectName" /></div>
+                <div class="col-md-2"><button onclick="AddProject()" class="sta-adminbt">Add Project</button></div>
+                <div class="col-md-4"><div id="dvMsg" class="text-danger" /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    List of child projects :
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered admin-onbrdtble">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.Label("Project Name")
+                                </th>
+                                <th>Actions</th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.projectName)</td>
+                            <td>@Html.ActionLink("Edit", "EditProjects", "ThirdLevelProject", new { projectID = item.id }, null)</td>
+                            <td>@Html.ActionLink("Delete", "DeleteProject", "ThirdLevelProject", new { projectID = item.id }, new { onclick = "return confirm('Are you sure you wish to delete?This will delete child projects and admin information also.');" }) </td>
+                            <td>@Html.ActionLink("Manage Skill", "Manage", "ProjectSkills", new { projectid = item.id }, null)</td>
+                            <td>@Html.ActionLink("Expected Competency", "Create", "ProjectExpectedResource", new { projectID = item.id }, null)</td>
+                            <td>@Html.ActionLink("Available Competency", "Create", "ProjectAvailableResource", new { projectID = item.id, projectName = item.projectName }, null)</td>
+                            <td>@Html.ActionLink("Overall Competency", "ResourceDetails", "ProjectResource", new { projectID = item.id }, null)</td>
+                            <td>@Html.ActionLink("Skill HeatMap", "Details", "SkillHeatMap", new { projectID = item.id }, null)</td>
+                            <td>@Html.ActionLink("Manage Project Admin", "ProjectAdmin", "ThirdLevelProject", new { parentProjectId = item.id }, null)</td>
+                            <td>@Html.ActionLink("Assign Project", "Index", "Assignment", new { id = item.id }, null)</td>
+                        </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function AddProject() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var projectId = urlParams.get('parentProjectId');
+        var name = $("#txtProjectName").val();
+        if (name.length == 0) {
+            $('#dvMsg').html('Please enter project name');
+            $('#dvMsg').attr("class", "text-danger");
+        }
+        else {
+            if (!/[^a-zA-Z0-9]/.test(name)) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/SecondLevelProject/AddProject",
+                    data: {
+                        projectname: name,
+                        parentProjectId: projectId
+                    },
+                    success: function (result) {
+                        window.location.reload();
+                        $('#dvMsg').html('Project added successfully');
+                        $('#dvMsg').attr("class", "text-success");
+                    }
+                })
+            }
+            else
+            {
+                $('#dvMsg').html('Project name cannot contain special characters');
+                $('#dvMsg').attr("class", "text-danger");
+            }
+        }
+
+       
+
+    }
+    
+</script>

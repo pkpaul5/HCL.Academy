@@ -1,0 +1,58 @@
+﻿@model IEnumerable<HCL.Academy.Model.EmailTemplate>
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+
+    #appadd {
+        display: block;
+        white-space: nowrap;
+        width: 200px;
+        height: 70px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row"><div class="col-md-12"><h2>Maintenance Of Email Templates</h2></div></div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "Email")' class="btn btn-primary" role="button">Add Email Template</a></div></div>
+        <table class="table table-bordered admin-onbrdtble">
+            <thead>
+                <tr>
+                    <th>
+                        <label>Title</label>
+                    </th>
+                    <th>
+                        @Html.Label("Email Subject")
+                    </th>
+                    <th>
+                        @Html.Label("Email Body")
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.emailSubject)
+                    </td>
+                    <td id="appadd">
+                        @Html.DisplayFor(modelItem => item.emailBody)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                        @Html.ActionLink("Delete", "Delete", "Email", new { id = item.id }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </section>
+</div>

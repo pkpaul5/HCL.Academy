@@ -1,0 +1,3 @@
+C:\Academy\EPS\Academy\Code\HCL.Academy.DB\HCLAcademyEmailJob\obj\Debug\HCLAcademyEmailJob.csprojAssemblyReference.cache
+C:\Academy\EPS\Academy\Code\HCL.Academy.DB\HCLAcademyEmailJob\obj\Debug\HCLAcademyEmailJob.exe.config
+C:\Academy\EPS\Academy\Code\HCL.Academy.DB\HCLAcademyEmailJob\obj\Debug\HCLAcademyEmailJob.csproj.CoreCompileInputs.cache

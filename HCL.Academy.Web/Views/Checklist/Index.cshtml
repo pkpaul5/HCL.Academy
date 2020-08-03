@@ -1,0 +1,73 @@
+﻿@model IEnumerable<HCL.Academy.Model.CheckListItem>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row"><div class="col-md-12"><h2>Maintenance Of Checklist</h2></div></div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "Checklist")' class="btn btn-primary" role="button">Add Checklist Item</a></div></div>
+        <table class="table table-bordered table-striped">
+            <thead style="background-color:#326295;color:#fff">
+                <tr>
+                    <th style="font-weight:bold">
+                        <span>@Html.Label("Name")</span>
+                    </th>
+                    <th style="font-weight:bold">
+                        <span>@Html.Label("Internal Name")</span>
+                    </th>
+                    <th style="font-weight:bold">
+                        <span>@Html.Label("Description")</span>
+                    </th>
+                    <th style="font-weight:bold">
+                        <span>@Html.Label("Choice")</span>
+                    </th>
+                    <th style="font-weight:bold">
+                        <span>@Html.Label("GEO")</span>
+                    </th>
+
+                    <th style="font-weight:bold">
+                        <span>@Html.Label("Role")</span>
+                    </th>
+
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.internalName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.desc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.choice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.geoName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.roleName)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id, checklist = item.name, geo = item.geoName, internalName = item.internalName, description = item.desc, textchoice = item.choice, role = item.roleName }) |
+                        @Html.ActionLink("Delete", "Delete", "Checklist", new { id = item.id }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                    </td>
+                </tr>
+            }
+            @*string checklist, string geo, string internalName, string description, string textchoice, string role)*@
+        </table>
+    </section>
+</div>

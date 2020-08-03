@@ -1,0 +1,55 @@
+﻿@using HCLAcademy.Utility;
+@using HCL.Academy.Model;
+@model IEnumerable<HCL.Academy.Model.UserTrainingDetail>
+
+<table class="table table-bordered admin-onbrdtble">
+    <thead>
+        <tr>
+            <th>
+                Training Name
+            </th>
+            <th>
+                Mark As Complete
+            </th>
+            <th>
+                Completion Date
+            </th>
+            <th>
+                Admin Approval Status
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UserTrainingDetail userTraining in Model)
+        {
+            <tr>
+                <td>
+                    @userTraining.TrainingName
+                </td>
+                <td>
+                    @if (userTraining.IsTrainingCompleted.Equals(false) || userTraining.AdminApprovalStatus.Equals("Rejected"))
+                    {
+                        var training = "'" + @userTraining.TrainingName + "'";
+                        var username = "'" + @userTraining.UserName + "'";
+                        <a href="#" onclick="RoleTrainingMarkAsCompleted(@userTraining.TrainingId,@training,@userTraining.ProjectId,@username)" class="sta-adminbt">Mark As Completed</a>
+                    }
+                    @if (userTraining.AdminApprovalStatus.Equals("Pending For Approval"))
+                    {
+                        var training = "'" + @userTraining.TrainingName + "'";
+                        var username = "'" + @userTraining.UserName + "'";
+                        <a id="skill" href="#" onclick="RoleTrainingRecalled(@userTraining.TrainingId,@training,@userTraining.ProjectId,@username)" class="sta-adminbt">Recall</a>
+                    }
+
+                </td>
+                <td>
+                    @userTraining.CompletionDate
+                </td>
+                <td>
+                    @userTraining.AdminApprovalStatus
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

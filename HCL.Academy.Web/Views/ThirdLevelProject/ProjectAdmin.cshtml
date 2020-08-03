@@ -1,0 +1,105 @@
+﻿@model  HCL.Academy.Model.Project
+@using HCL.Academy.Model;
+@{
+    ViewBag.Title = "ProjectAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    <section id="tabs" class="content-wrapper main-content clear-fix container">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li>@Html.ActionLink("First Level Project Management", "Index", "FirstLevelProject")</li>
+                <li>@Html.ActionLink("Second Level Project Management", "ManageChildProject", "SecondLevelProject", new { parentProjectId = Model.parentProjectId }, null)</li>
+                <li class="active">Third Level Project Management</li>
+            </ul>
+            <div class="row"><div class="col-md-12"><h2>Third Level Project Management - Manage Project Admin</h2></div></div>
+            <div id="dvProjectAdmin" class="tab-pane fade in active">
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        Project Name
+                    </div>
+                    <div class="col-md-3">
+                        <div><label>@ViewBag.ProjectName</label></div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        Select User to be added as admin
+                    </div>
+                    <div class="col-md-2">
+                        <select id="ddUser" class="form-control">
+                            @foreach (HCL.Academy.Model.Users u in ViewBag.Users)
+                            {
+                                <option value=@u.userID>@u.userName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button onclick="AddAdmin()" class="sta-adminbt">Add Admin</button>
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered admin-onbrdtble">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.Label("EmployeeId")
+                                    </th>
+                                    <th>
+                                        @Html.Label("EmailAddress")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Name")
+                                    </th>
+                                    <th>
+                                        Delete
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.projectAdmins)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmailAddress)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Delete", "Delete", "ThirdLevelProject", new { id = item.UserId, projectid = Model.id }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+
+    function AddAdmin() {
+      
+        var urlParams = new URLSearchParams(window.location.search);
+        var parentProjectId = urlParams.get('parentProjectId');
+        var id = $("#ddUser").val();
+        $.ajax({
+            type: "POST",
+            url: "/ThirdLevelProject/AddAdmin",
+            data: { userid: id, projectid: parentProjectId },
+            success: function (result) { window.location.reload(); }
+        })
+
+    }
+
+</script>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<HCL.Academy.Model.ExternalUser>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row">
+            <div class="col-md-12"><h2>Manage External Users</h2></div>
+        </div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "ExternalUser")' class="btn btn-primary" role="button">Register User</a></div></div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered admin-onbrdtble">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span>@Html.Label("Email Address")</span>
+                            </th>
+                            <th>
+                                <span>@Html.Label("Name")</span>
+                            </th>
+                            <th>
+                                <span>@Html.Label("Group")</span>
+                            </th>
+                            <th>
+                                <span>@Html.Label("Organization")</span>
+                            </th>
+                            <th>
+                                <span>@Html.Label("Employee ID")</span>
+                            </th>
+                            <th>
+                                <span>@Html.Label("Role")</span>
+                            </th>
+                            <th>
+                                <span>@Html.Label("GEO")</span>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Group)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Organization)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GEO)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) | @Html.ActionLink("Change Password", "ChangePassword", new { id = item.ID }) |
+                                @Html.ActionLink("Delete", "Delete", "ExternalUser", new { id = item.ID, email = item.UserName }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                            </td>
+                        </tr>
+                    }
+                    @*string checklist, string geo, string internalName, string description, string textchoice, string role)*@
+                </table>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <div style="color:red"><b>@Html.Raw(TempData["msg"])</b></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

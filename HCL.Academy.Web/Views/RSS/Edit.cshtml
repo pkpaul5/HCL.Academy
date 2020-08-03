@@ -1,0 +1,119 @@
+﻿@model HCL.Academy.Model.RSSFeedMaster
+
+@{
+    ViewBag.Title = "Edit";
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <ul class="breadcrumb">
+            <li>@Html.ActionLink("RSSFeed List", "Index")</li>
+            <li class="active">Update RSSFeed</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-12"><h2>Update RSSFeed</h2></div>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>RSSFeed</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.TitleNode, "Title Node Path", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.TitleNode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TitleNode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.RSSFeedUrl, "RSS Feed Url", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.RSSFeedUrl, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.RSSFeedUrl, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.DescriptionNode, "Description Node Path", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DescriptionNode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DescriptionNode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.hrfTitleNodePath, "HRF Title Node Path", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.hrfTitleNodePath, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.hrfTitleNodePath, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.PubDateNode, "Pub Date Node Path", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PubDateNode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PubDateNode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.itemNodePath, "Item Node Path", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.itemNodePath, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.itemNodePath, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.rssFeedOrder, "RSS Feed Order", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.rssFeedOrder, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.rssFeedOrder, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("< Back to List", "Index")
+        </div>
+    </section>
+</div>
+

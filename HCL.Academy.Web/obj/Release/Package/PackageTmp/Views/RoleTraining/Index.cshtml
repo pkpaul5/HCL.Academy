@@ -1,0 +1,93 @@
+﻿@model IEnumerable<HCL.Academy.Model.RoleTraining>
+@{
+    ViewBag.Title = "Role Trainings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" language="javascript">
+    function removeRoleTraining(id) {
+        var res = confirm("Do you really want to delete the record  ?");
+        var ststus = (res == true) ?deleteRoleTraining(id) : "" ; 
+    }
+
+    function deleteRoleTraining(id) {
+        if (id != null && id != "") {
+
+            var PostData = {
+                id: id              
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/RoleTraining/DeleteRoleTraining",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    if (result) {
+                        alert("Record deleted successfully.");
+                        location.reload();
+
+
+                    }
+                    else {
+                        alert("This record is referenced in other tables and can't be deleted.");
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+       
+    }
+</script>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row"><div class="col-md-12"><h2>Maintenance Of Role Training</h2></div></div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "RoleTraining")' class="btn btn-primary" role="button">Add RoleTraining</a></div></div>
+        <table class="table table-bordered admin-onbrdtble">
+            <thead>
+                <tr>
+                    <th>Training</th>
+                    <th>Role</th>
+                    <th>Is Mandatory</th>
+                    <th>Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TrainingName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RoleName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsMandatory)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.RoleTrainingId }) |
+                                <a onclick="removeRoleTraining(@item.RoleTrainingId)" style="cursor:pointer">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" style="text-align:center">No data to display</td>
+                    </tr>
+                }
+            </tbody>
+
+
+
+        </table>
+    </section>
+</div>
+

@@ -1,0 +1,81 @@
+﻿@using HCL.Academy.Model;
+@model IEnumerable<HCL.Academy.Model.UserOnBoarding>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Skill Matrix and Competency Evaluation:</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">Select Project</div>
+            <div class="col-md-2 text-left">
+                <select id="project" class="form-control">
+                    <option value="0">All Projects</option>
+                    @foreach (Project proj in ViewBag.Projects)
+                    {
+                        <option value=@proj.id>@proj.projectName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-8">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button onclick="GetReport()" class="sta-adminbt">Get Report</button>
+                    <button onclick="Download()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                </div>
+            </div>
+        </div>       
+        <div class="row">
+            <div class="col-md-12" id="dvReport">               
+            </div>
+        </div>        
+    </section>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+    function GetReport()
+    {
+        var selectedProjectId = $("#project").val();
+        var PostData = {
+            
+            projectid: selectedProjectId
+        };
+        $.ajax({
+            type: "POST",
+            url: "/CandidateSkillMap/GetReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (response) {
+                $("#dvReport").html(response);
+            },
+            failure: function (response) {
+                alert(response.d);
+            }
+        });
+    }
+     function Download()
+     {
+         var selectedProjectId = $("#project").val();
+
+         var url = '@Url.Action("DownloadReportToExcel", "CandidateSkillMap")?projectId=' + selectedProjectId;
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+    }
+
+</script>

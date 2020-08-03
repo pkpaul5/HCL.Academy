@@ -1,0 +1,111 @@
+﻿@model IEnumerable<HCL.Academy.Model.News>
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<div id="body">
+    @if (TempData["DeleteNewsFailed"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                alert("Record could not be deleted!");
+            });
+        </script>
+    }
+    else if (TempData["DeleteNewsSuccess"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                alert("Record deleted successfully!");
+            });
+        </script>
+    }
+
+    @if (TempData["EditNews"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                alert("Record updated successfully");
+            });
+        </script>
+    }
+    else if (TempData["EditNewsFailed"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                alert("Record could not be updated");
+            });
+        </script>
+    }
+
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="news-wrapper">
+            <div class="row"><div class="col-md-12"><h2>Maintenance Of News Events</h2></div></div>
+            <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "News")' class="btn btn-primary" role="button">Add News Event</a></div></div>
+            <div class="row">
+                @{
+
+                    <div class="col-md-12">
+                        <table class="table table-bordered admin-onbrdtble">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.imageURL)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.body)
+                                    </th>                                    
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.header)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.trimmedBody)
+                                    </th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ID)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.imageURL)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.body)
+                                        </td>                                        
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.header)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.trimmedBody)
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                            @Html.ActionLink("Delete", "Delete", "News", new { id = item.ID }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                }
+            </div>
+        </div>
+    </section>
+</div>
+

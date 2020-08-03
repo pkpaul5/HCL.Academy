@@ -1,0 +1,40 @@
+﻿@model HCL.Academy.Model.AcademyConfig
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <ul class="breadcrumb">
+            <li>@Html.ActionLink("AcademyConfig List", "Index")</li>
+            <li>@Html.ActionLink("Edit", "Edit", new { id = Model.ID })</li>
+            <li class="active">Detail AcademyConfig</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-12"><h2>Detail AcademyConfig</h2></div>
+        </div>
+        <div>
+            <h4>AcademyConfig Details</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Value)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Value)
+                </dd>
+
+            </dl>
+        </div>        
+    </section>
+    </div>

@@ -1,0 +1,43 @@
+﻿@model HCL.Academy.Model.Competence
+@using HCL.Academy.Model;
+
+@{
+                /**/
+
+                ViewBag.Title = "Create";
+                var competences = (List<Competence>)Session["CompetencyLevels"];
+}
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Projects</h2>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <table class="table table-bordered table-striped" id="tblProjects">
+                        <thead style="background-color:#326295;color:#fff">
+                            <tr>
+                                <th style="border:none">Add Competency Level</th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td><label>Competence Name</label></td>
+                            <td>@Html.EditorFor(model => model.CompetenceName, new { htmlAttributes = new { @id = "competenceName", @class = "form-control" } })</td>
+                            <td><input type="submit" value="Add" class="btn btn-default" /></td>
+                        </tr>
+                    </table>
+
+                    @Html.ValidationMessageFor(model => model.CompetenceName, "", new { @class = "text-danger" })
+                    @Html.Partial("Index", competences)
+                </div>
+
+
+            </div>
+    </section>
+    </div>
+    }

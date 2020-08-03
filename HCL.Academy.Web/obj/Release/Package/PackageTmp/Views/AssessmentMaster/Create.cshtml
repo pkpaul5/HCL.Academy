@@ -1,0 +1,186 @@
+﻿@model HCL.Academy.Model.AssessmentMaster
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#ddSkillForAssmnt').change(function () {
+            $.ajax({
+                type: "post",
+                url: "/AssessmentMaster/GetCompetenciesBySkillId",
+                data: { SkillId: $('#ddSkillForAssmnt').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var competency = "<select id='ddCompetenceForAssmnt'>";
+                    competency = competency + '<option value="">Select Competency</option>';
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        competency = competency + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    competency = competency + '</select>';
+                    $('#ddCompetenceForAssmnt').html(competency);
+                }
+            });
+        });
+
+        $('#ddCompetenceForAssmnt').change(function () {
+            $.ajax({
+                type: "post",
+                url: "/AssessmentMaster/GetTrainingBySkillCompetencyId",
+                data: { SkillId: $('#ddSkillForAssmnt').val(), CompetencyId: $('#ddCompetenceForAssmnt').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var training = "<select id='ddTrainingForAssmnt'>";
+                    training = training + '<option value="">Select Training</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        training = training + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    training = training + '</select>';
+                    $('#ddTrainingForAssmnt').html(training);
+                }
+            });
+        });
+
+    });
+</script>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <ul class="breadcrumb">
+            <li>@Html.ActionLink("Assessment List", "Index")</li>
+            <li class="active">Add Assessment</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-12"><h2>Add Assessment</h2></div>
+        </div>        
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.AssessmentName, htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AssessmentName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AssessmentName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.IsMandatory, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        <div class="checkbox" style="padding-left: 20px !important;">
+                            @Html.EditorFor(model => model.IsMandatory)
+                            @Html.ValidationMessageFor(model => model.IsMandatory, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.AssessmentLink, htmlAttributes: new { @class = "control-label" })
+                        @*<span style="color:red">*</span>*@
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AssessmentLink, new { htmlAttributes = new { @class = "form-control" } })
+                        @*@Html.ValidationMessageFor(model => model.AssessmentLink, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.AssessmentTimeInMins, htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AssessmentTimeInMins, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AssessmentTimeInMins, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.Skills, "Skills", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @*@Html.DropDownListFor(model => model.Skills, new SelectList(Model.Skills), "Please select Skill", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Skills, "", new { @class = "text-danger" })*@
+
+                        @Html.DropDownListFor(model => model.SelSkillId, new SelectList(Model.Skills, "SkillId", "SkillName"), "Select Skill", new { @id = "ddSkillForAssmnt", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SelectedSkill, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.PassingMarks, htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PassingMarks, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PassingMarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.Competencies, "Competencies", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.SelCompetencyId, new SelectList(Model.Competencies, "CompetenceId", "CompetenceName"), "Select Competency", new { @id = "ddCompetenceForAssmnt", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Competencies, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.Trainings, "Training", htmlAttributes: new { @class = "control-label" })
+                        @*<span style="color:red">*</span>*@
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.SelTrainingId, new SelectList(Model.Trainings, "TrainingId", "TrainingName"), "Select Training", new { @id = "ddTrainingForAssmnt", @class = "form-control", data_val = false })
+                        @*@Html.ValidationMessageFor(model => model.Trainings, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2" style="text-align:left">
+                        @Html.LabelFor(model => model.Points, htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </section>
+    </div>

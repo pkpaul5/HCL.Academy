@@ -1,0 +1,119 @@
+﻿@model List<HCL.Academy.Model.UserSkill>
+<link href="../Content/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<link href="../Content/css/competence.css" rel="stylesheet" />
+<link href="../Content/css/style.css" rel="stylesheet" />
+
+    <div>
+        <div class="headerOne">ASSIGNED SKILLS <a class="seeMoreNew" href='@Url.Action("Career", "CareerProgression")'>See More</a> </div>
+
+        <ul class="list-group">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+
+                <li class="list-group-item">@Model[i].Skill - @Model[i].Competence</li>
+            }
+        </ul>
+
+    @*<div class="chart-main">
+        <div class="chart-hld" style="margin-left:1px;">
+            <ul>
+                @for(int i=0;i<Model.Count;i++)
+                {
+                    if (i == 4) { break; }
+                    if (Model[i].Competence == "EXPERT")
+                    {
+                        <li>
+                            <div class="box green">
+                                <span>Expert</span>
+                            </div>
+                            <div class="box orange">
+                                <span>Proficient</span>
+                            </div>
+                            <div class="box blue">
+                                <span>Competent</span>
+                            </div>
+                            <div class="box yellow">
+                                <span>Advanced Beginner</span>
+                            </div>
+                            <div class="box red">
+                                <span>Novice</span>
+                            </div>
+                        </li>
+                    }
+                    else if (Model[i].Competence == "PROFICIENT")
+                    {
+                        <li>
+                            <div class="box orange">
+                                <span>Proficient</span>
+                            </div>
+                            <div class="box blue">
+                                <span>Competent</span>
+                            </div>
+                            <div class="box yellow">
+                                <span>Advanced Beginner</span>
+                            </div>
+                            <div class="box red">
+                                <span>Novice</span>
+                            </div>
+                        </li>
+                    }
+                    else if (Model[i].Competence == "COMPETENT")
+                    {
+                        <li>
+                            <div class="box blue">
+                                <span>Competent</span>
+                            </div>
+                            <div class="box yellow">
+                                <span>Advanced Beginner</span>
+                            </div>
+                            <div class="box red">
+                                <span>Novice</span>
+                            </div>
+                        </li>
+                    }
+                    else if (Model[i].Competence == "ADVANCED BEGINNER")
+                    {
+                        <li>
+                            <div class="box yellow">
+                                <span>Advanced Beginner</span>
+                            </div>
+                            <div class="box red">
+                                <span>Novice</span>
+                            </div>
+                        </li>
+                    }
+                    else if (Model[i].Competence == "BEGINNER")
+                    {
+                        <li>
+                            <div class="box red">
+                                <span>Novice</span>
+                            </div>
+                        </li>
+                    }
+                    else if (Model[i].Competence == "NOVICE")
+                    {
+                        <li>
+                            <div class="box red">
+                                <span>Novice</span>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div class="skills-pan" style="margin-left:1px;">
+            <ul>
+                @for (int i=0;i<Model.Count;i++)
+                {
+                    if (i == 4) { break; }
+                    <li>@Model[i].Skill</li>
+                }
+            </ul>
+        </div>
+        @*<div style="padding-left:30px;font-size:20px;text-align:left;padding-top:20px;">
+            <p style="float:left;">Skills assigned to user</p>
+            <span class="glyphicon glyphicon-arrow-right" style="float:left;margin-left:10px;"></span>
+        </div>*@
+</div>
+    @*</div>*@
+

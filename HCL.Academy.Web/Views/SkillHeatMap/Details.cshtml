@@ -1,0 +1,65 @@
+﻿@using HCLAcademy.Util
+@model HCL.Academy.Model.HeatMapProjectDetail
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Details"))
+{
+    @Html.AntiForgeryToken()
+    <div id="body">
+
+        <section class="content-wrapper main-content clear-fix container">
+            <ul class="breadcrumb">
+                <li>@Html.ActionLink("First Level Project Management", "Index", "FirstLevelProject")</li>
+                <li class="active">Skill HeatMap</li>
+            </ul>
+            <br />
+            <h2>Skill HeatMap</h2>
+            <h3>Project &nbsp;&nbsp;&nbsp;@Html.DisplayFor(model => model.projectName)@Html.HiddenFor(model => model.id, new { htmlAttributes = new { @class = "form-control" } })@Html.HiddenFor(model => model.projectName, new { htmlAttributes = new { @class = "form-control" } })</h3>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h4>Competencywise Resource Count - Expected vs Available</h4>
+                    <table style="width:100%;" class="table table-bordered admin-onbrdtble">
+                        <tr>
+                            <td style="text-align: left">Competency Level</td>
+                            <td style="text-align: left">
+                                @Html.DropDownListFor(model => model.competencyLevel, new SelectList(
+                            new List<Object>{
+                            new { value = "Novice", text = "Novice"  },
+                            new { value = "AdvancedBeginner" , text = "AdvancedBeginner" },
+                            new { value = "Competent" , text = "Competent"},
+                            new { value = "Proficient" , text = "Proficient"},
+                            new { value = "Expert" , text = "Expert"}
+                            },
+                            "value",
+                            "text", 0), new { onchange = "this.form.submit()" })
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left">
+                                @Html.Chart("HeatMap",
+                                        "Charts",
+                                        new {  projectId = Model.id, competency = Model.competencyLevel})
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h4>Average Skill Proficiency (ASP) - Expected vs Available</h4>
+                    <table style="width:100%;" class="table table-bordered admin-onbrdtble">
+                        <tr>
+                            <td style="padding-top:3.6em;">
+                                @Html.Chart("AverageHeatMap",
+                                       "Charts",
+                                       new {  projectId = Model.id})
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+}

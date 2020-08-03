@@ -1,0 +1,114 @@
+﻿@model IEnumerable<HCL.Academy.Model.AssessmentMaster>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+    @if (TempData["CreateSuccess"] != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Record created successfully!');
+
+            });
+
+        </script>
+    }
+    else if (TempData["DeleteMessage"] != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Record deleted successfully!');
+
+            });
+
+        </script>
+    }
+        <section class="content-wrapper main-content clear-fix container">
+            <div class="row"><div class="col-md-12"><h2>Maintenance Of Assessment</h2></div></div>
+            <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "AssessmentMaster")' class="btn btn-primary" role="button">Add Assessment</a></div></div>           
+            <table class="table table-bordered admin-onbrdtble">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AssessmentName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SelectedTraining)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsMandatory)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AssessmentLink)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AssessmentTimeInMins)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SelectedSkill)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PassingMarks)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SelectedCompetency)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Points)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssessmentName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SelectedTraining)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsMandatory)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssessmentLink)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssessmentTimeInMins)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SelectedSkill)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PassingMarks)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SelectedCompetency)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Points)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { AssessmentId = item.AssessmentId, SelSkillId = item.SelSkillId, SelectedSkill = item.SelectedSkill, SelCompetencyId = item.SelCompetencyId, SelTrainingId = item.SelTrainingId }) |
+                            @Html.ActionLink("Delete", "Delete", "AssessmentMaster", new { id = item.AssessmentId }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </section>
+</div>

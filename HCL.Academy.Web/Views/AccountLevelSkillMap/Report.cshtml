@@ -1,0 +1,78 @@
+﻿@model HCL.Academy.Model.AccountSkillHeatMapViewModel
+@using HCL.Academy.Model;
+@using HCLAcademy.Util;
+
+<table style="width:100%;" class="table table-bordered admin-onbrdtble">
+    <tr>
+        @*<td>
+                @*<table>
+                <tr><td>Competency Level</td><td>  @Html.DropDownListFor(model => model.competencyLevel, Model.competencies, new { onchange = "this.form.submit()", name = "competencyLevel" })</td></tr>
+                <tr><td colspan="2">@Html.Chart("SkillMap", "Charts", new { competency = Model.competencyLevel, projectId = Model.projectId })</td></tr>
+                <tr><td colspan="2" style="font-size:small;font-style:italic">Rightclick on the chart and click 'Save Image As ..' to save the chart image in local machine</td></tr>
+            </table>
+                @Html.Chart("SkillMap", "Charts", new { competency = 1, projectId = Model.projectId })
+            </td>*@
+        <td colspan="3">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color:#326295;color:#fff">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.resources[0].Skill)</th>
+                        <th>@Html.DisplayNameFor(model => model.resources[0].NoviceCount)</th>
+                        <th>@Html.DisplayNameFor(model => model.resources[0].AdvancedBeginnerCount)</th>
+                        <th>@Html.DisplayNameFor(model => model.resources[0].CompetentCount)</th>
+                        <th>@Html.DisplayNameFor(model => model.resources[0].ProficientCount)</th>
+                        <th>@Html.DisplayNameFor(model => model.resources[0].ExpertCount)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.resources)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Skill)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NoviceCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AdvancedBeginnerCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CompetentCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProficientCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExpertCount)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr><td colspan="3"><h2>Competency wise graphical representation:</h2></td></tr>
+    <tr><td colspan="3" style="font-size:small;font-style:italic">Rightclick on the chart and click 'Save Image As ..' to save the chart image in local machine</td></tr>
+    <tr style="background-color:lightgray">
+        <td>Novice</td>
+        <td>Advanced Beginner</td>
+        <td>Competent</td>
+    </tr>
+    <tr>
+        <td>@Html.Chart("SkillMap", "Charts", new { competency = 1, projectId = Model.projectId })</td>
+        <td>@Html.Chart("SkillMap", "Charts", new { competency = 2, projectId = Model.projectId })</td>
+        <td>@Html.Chart("SkillMap", "Charts", new { competency = 3, projectId = Model.projectId })</td>
+    </tr>
+    <tr style="background-color:lightgray">
+        <td>Proficient</td>
+        <td>Expert</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>@Html.Chart("SkillMap", "Charts", new { competency = 4, projectId = Model.projectId })</td>
+        <td>@Html.Chart("SkillMap", "Charts", new { competency = 5, projectId = Model.projectId })</td>
+        <td></td>
+    </tr>
+</table>

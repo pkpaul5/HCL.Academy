@@ -1,0 +1,164 @@
+﻿@model HCL.Academy.Model.AssessmentQuestion
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    @if (ViewBag.Success == true)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Record saved successfully!');
+            });
+
+        </script>
+    }
+        <section class="content-wrapper main-content clear-fix container">
+            <ul class="breadcrumb">
+                <li>@Html.ActionLink("Assessment Question List", "Index")</li>
+                <li class="active">Update Assessment Question</li>
+            </ul>
+            <div class="row">
+                <div class="col-md-12"><h2>Update Question</h2></div>
+            </div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>AssessmentQuestion</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ID)
+
+                    @*<div class="form-group">
+                <div class="col-md-2" style="text-align:left">
+                    @Html.LabelFor(model => model.SelectedAssessmentId, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SelectedAssessmentId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SelectedAssessmentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Question, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Question, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Question, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Marks, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Marks, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Marks, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Assessments, "Assessments", htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.SelectedAssessmentId, new SelectList(Model.Assessments, "AssessmentId", "AssessmentName"), "Select Assessment", new { @id = "ddSAssmnt", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.SelectedAssessment, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Option1, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Option1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Option1, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Option2, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Option2, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Option2, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Option3, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Option3, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Option3, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Option4, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Option4, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Option4, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.Option5, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Option5, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Option5, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.CorrectOption, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CorrectOption, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CorrectOption, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:left">
+                            @Html.LabelFor(model => model.CorrectOptionSequence, htmlAttributes: new { @class = "control-label" })
+                            <span style="color:red">*</span>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CorrectOptionSequence, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CorrectOptionSequence, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </section>
+    </div>

@@ -1,0 +1,305 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using HCLAcademy.Utility;
+@using HCL.Academy.Model;
+@model HCL.Academy.Model.LearningChecklist
+
+<script type="text/javascript" language="javascript">
+
+    function SkillbasedTraining() {
+
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/GetSkillbasedTrainingAdminview",
+            data: {},
+            success: function (result) { $("#dvSkill").html(result); }
+        })
+    }
+
+    function RolebasedTraining() {
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/GetRolebasedTrainingAdminview",
+            data: {},
+            success: function (result) { $("#dvRole").html(result); }
+        })
+    }
+
+    function SkillTrainingApproval(id, userid, AdminApprovalStatus, adminname, trainingname, username, useremail) {
+        var PostData = {
+            trainingid: id,
+            UserId: userid,
+            ApprovalStatus: AdminApprovalStatus,
+            AdminName: adminname,
+            TrainingName: trainingname,
+            UserName: username,
+            UserEmail: useremail,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/SkillTrainingApproval",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    if (PostData.ApprovalStatus == 'Approved') {
+                        alert("Training approved.");
+                    }
+                    else {
+                        alert("Training rejected.");
+                    }
+
+                    SkillbasedTraining();
+                }
+                else {
+                    alert("Approval Failed.");
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function ChangeStatusofAllTrainings(ApproveAll, AdminApprovalStatus) {
+
+        var PostData = {
+            ApproveTrainings: ApproveAll,
+            ApprovalStatus: AdminApprovalStatus,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/ChangeStatusofAllTrainings",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    if (PostData.ApprovalStatus == 'Approved') {
+                        alert("Training approved.");
+                    }
+                    else {
+                        alert("Training rejected.");
+                    }
+
+                    SkillbasedTraining();
+                    RolebasedTraining();
+                }
+                else {
+                    alert("Approval Failed.");
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+
+
+    function RoleTrainingApproval(id, userid, AdminApprovalStatus, adminname, trainingname, username, useremail) {
+        var PostData = {
+            trainingid: id,
+            UserId: userid,
+            ApprovalStatus: AdminApprovalStatus,
+            AdminName: adminname,
+            TrainingName: trainingname,
+            UserName: username,
+            UserEmail: useremail,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/RoleTrainingApproval",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    if (PostData.ApprovalStatus == 'Approved') {
+                        alert("Training approved.");
+                    }
+                    else {
+                        alert("Training rejected.");
+                    }
+                    RolebasedTraining();
+                }
+                else {
+                    alert("Approval Failed.");
+
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row">
+            <div class="row"><div class="col-md-12"><h2>Training Approval</h2></div></div>
+            @{
+                string approveallskills = String.Empty;
+                string approveallroles = String.Empty;
+                string listofIds = String.Empty;
+                if (Model != null && Model.SkillBasedTrainings.Count() > 0)
+                {
+
+                    string listofskills = String.Empty;
+
+                    foreach (UserTrainingDetail train in Model.SkillBasedTrainings)
+                    {
+                        listofskills += Convert.ToString(train.UserId) + "$";
+                    }
+                    approveallskills = listofskills;
+
+
+                }
+                if (Model != null && Model.RoleBasedTrainings.Count() > 0)
+                {
+                    string listofroles = String.Empty;
+
+                    foreach (UserTrainingDetail train in Model.RoleBasedTrainings)
+                    {
+                        listofroles += Convert.ToString(train.UserId) + "$";
+                    }
+                    approveallroles = listofroles;
+                }
+                listofIds = approveallskills + approveallroles;
+                if ((Model != null && Model.RoleBasedTrainings.Count() > 0)||(Model != null && Model.SkillBasedTrainings.Count() > 0))
+                {
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a href="#" onclick="ChangeStatusofAllTrainings('@listofIds','Approved')" class="sta-adminbt">Approve All</a>
+                            </td>
+                            <td><a href="#" onclick="ChangeStatusofAllTrainings('@listofIds','Rejected')" class="sta-adminbt">Reject All</a></td>
+                            <td></td>
+
+                        </tr>
+                    </table>
+                }
+            }
+            <div class="col-md-12 pL0 pR0">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Skill Based Training</h1>
+
+                    </header>
+                </article>
+            </div>
+            <div class="col-md-12" id="dvSkill">
+                @Html.Partial("SkillbasedTrainingAdminview", Model.SkillBasedTrainings)
+                @*<table class="table table-bordered admin-onbrdtble">
+                        <thead>
+                            <tr>
+                                <th>
+                                    User Name
+                                </th>
+                                <th>
+                                    Training Name
+                                </th>
+                                <th>
+                                    Completion Date
+                                </th>
+                                <th>
+                                    Approve
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (UserTrainingDetail userTraining in Model.SkillBasedTrainings)
+                            {
+                            <tr>
+                                <td>
+                                    @userTraining.UserName
+                                </td>
+                                <td>
+                                    @userTraining.TrainingName
+                                </td>
+                                <td>
+                                    @userTraining.CompletionDate
+                                </td>
+                                <td>
+                                    <a  href="#" onclick="SkillTrainingApproval(@userTraining.TrainingId,@userTraining.UserId,'Approved')" class="sta-adminbt">Approve</a>  |
+                                    <a  href="#" onclick="SkillTrainingApproval(@userTraining.TrainingId,@userTraining.UserId,'Rejected')" class="sta-adminbt">Reject</a>
+                                </td>
+
+                            </tr>
+                            }
+                        </tbody>
+                    </table>*@
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 pL0 pR0">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Role Based Training</h1>
+
+                    </header>
+                </article>
+            </div>
+            <div class="col-md-12" id="dvRole">
+                @Html.Partial("RolebasedTrainingAdminview", Model.RoleBasedTrainings)
+                @*<table class="table table-bordered admin-onbrdtble">
+                        <thead>
+                            <tr>
+                                <th>
+                                    User Name
+                                </th>
+                                <th>
+                                    Training Name
+                                </th>
+                                <th>
+                                    Completion Date
+                                </th>
+                                <th>
+                                    Approve
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (UserTrainingDetail userTraining in Model.RoleBasedTrainings)
+                            {
+                                <tr>
+                                    <td>
+                                        @userTraining.UserName
+                                    </td>
+                                    <td>
+                                        @userTraining.TrainingName
+                                    </td>
+                                    <td>
+                                        @userTraining.CompletionDate
+                                    </td>
+                                    <td>
+                                        <a href="#" onclick="RoleTrainingApproval(@userTraining.TrainingId,@userTraining.UserId,'Approved')" class="sta-adminbt">Approve</a>  |
+                                        <a href="#" onclick="RoleTrainingApproval(@userTraining.TrainingId,@userTraining.UserId,'Rejected')" class="sta-adminbt">Reject</a>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
+            </div>
+        </div>
+
+    </section>
+</div>

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<HCL.Academy.Model.RSSFeedMaster>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div id="body">
+    @if (TempData["Message"] != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert(TempData["Message"]);
+
+            });
+
+        </script>
+    }
+        <section class="content-wrapper main-content clear-fix container">
+            <div class="row"><div class="col-md-12"><h2>Maintenance Of RSSFeed</h2></div></div>
+            <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "RSS")' class="btn btn-primary" role="button">Add RSSFeed</a></div></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered admin-onbrdtble">
+                        <thead>
+                            <tr>
+                                <th style="vertical-align:top">
+                                    <label>Title</label>
+                                </th>
+                                <th style="vertical-align:top">
+                                    <label>Title Node Path</label>
+                                </th>
+                                <th style="vertical-align:top">
+                                    <label>RSS Feed Url</label>
+                                </th>
+                                <th style="vertical-align:top">
+                                    <label>Description Node Path</label>
+                                </th>
+                                <th style="vertical-align:top">
+                                    <label>Pub Date Node Path</label>
+                                </th>
+                                <th style="vertical-align:top">
+                                    <label>Item Node Path</label>
+                                </th>
+                                <th style="vertical-align:top">
+                                    <label>Rss Feed Order</label>
+                                </th>
+                                <th style="vertical-align:top">
+                                    <label>HRF Title Node Path</label>
+                                </th>
+                                <th style="vertical-align:top">Actions</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TitleNode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RSSFeedUrl)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DescriptionNode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PubDateNode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.itemNodePath)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rssFeedOrder)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.hrfTitleNodePath)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                    @Html.ActionLink("Delete", "Delete", "RSS", new { id = item.ID }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </section>
+</div>

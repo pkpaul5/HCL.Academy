@@ -1,0 +1,312 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using HCLAcademy.Utility;
+@using HCL.Academy.Model;
+@model HCL.Academy.Model.LearningChecklist
+
+<script type="text/javascript" language="javascript">
+
+    function SkillbasedTraining() {
+
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/GetSkillbasedTrainingUserview",
+            data: { },
+            success: function (result) { $("#dvSkill").html(result); }
+        })
+    }
+
+    function RolebasedTraining() {
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/GetRolebasedTrainingUserview",
+            data: {},
+            success: function (result) { $("#dvRole").html(result); }
+        })
+    }
+
+    function SkillTrainingMarkAsCompleted(id, TrainingName, Projectid, UserName) {
+        debugger;
+        var checkProjValue = Projectid;
+        if (checkProjValue ===0) {
+            alert("You will not be able to mark this training as completed because you are not assign to a project.");
+            return false;
+        }
+        var Progress = "Sent";
+        var PostData = {
+            trainingid: id,
+        //    traingname: TrainingName,
+            Projectid: Projectid,
+            UserName: UserName,
+            progress:Progress,
+        };
+        
+            $.ajax({
+                type: "POST",
+                url: "/LearningChecklist/SkillTrainingCompletionRequest",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    console.log(result);
+                    if (result) {
+                        alert("Training sent for the approval.");
+                        SkillbasedTraining();
+                    }
+                    else {
+                        alert("This training can't be sent for the approval.");
+
+                    }
+
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        
+    }
+    function SkillTrainingRecalled(id, TrainingName, Projectid, UserName) {
+        debugger;
+        var checkProjValue = Projectid;
+        if (checkProjValue === 0) {
+            alert("You will not be able to recall this training because you are not assign to a project.");
+            return false;
+        }
+        var Progress = "Recalled";
+        var PostData = {
+            trainingid: id,
+          //  traingname: TrainingName,
+            Projectid: Projectid,
+            UserName: UserName,
+            progress: Progress,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/SkillTrainingCompletionRequest",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    alert("Training has been recalled.");
+                    SkillbasedTraining();
+                }
+                else {
+                    alert("This training can't be recalled.");
+
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function RoleTrainingMarkAsCompleted(id, TrainingName, Projectid, UserName) {
+        debugger;
+        var checkProjValue = Projectid;
+        if (checkProjValue === 0) {
+            alert("You will not be able to mark this training as completed because you are not assign to a project.");
+            return false;
+        }
+        var Progress = "Sent";
+        var PostData = {
+            trainingid: id,
+          //  traingname: TrainingName,
+            Projectid: Projectid,
+            UserName: UserName,
+            progress: Progress,
+        };
+        
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/RoleTrainingCompletionRequest",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    alert("Training sent for approval.");
+                    RolebasedTraining();
+                }
+                else {
+                    alert("Unable to send Training for approval.");
+                  
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function RoleTrainingRecalled(id, TrainingName, Projectid, UserName) {
+        debugger;
+        var checkProjValue = Projectid;
+        if (checkProjValue === 0) {
+            alert("You will not be able to mark this training as completed because you are not assign to a project.");
+            return false;
+        }
+        var Progress = "Recalled";
+        var PostData = {
+            trainingid: id,
+            traingname: TrainingName,
+            Projectid: Projectid,
+            UserName: UserName,
+            progress: Progress,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/LearningChecklist/RoleTrainingCompletionRequest",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    alert("Training has been recalled.");
+                    RolebasedTraining();
+                }
+                else
+                {
+                       alert("This training can't be recalled.");
+
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row">
+            <div class="row"><div class="col-md-12"><h2>Training Checklist</h2></div></div>
+            <div class="col-md-12 pL0 pR0">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Skill Based Training</h1>
+
+                    </header>
+                </article>
+            </div>
+            <div class="col-md-12" id="dvSkill">
+                @Html.Partial("SkillbasedTrainingUserview", Model.SkillBasedTrainings)
+                @*<table class="table table-bordered admin-onbrdtble">
+                <thead>
+                    <tr>
+                        <th>
+                            Training Name
+                        </th>
+                        <th>
+                            Mark As Complete
+                        </th>
+                        <th>
+                            Completion Date
+                        </th>
+                        <th>
+                            Admin Approval Status
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (UserTrainingDetail userTraining in Model.SkillBasedTrainings)
+                    {
+                        <tr>
+                            <td>
+                                @userTraining.TrainingName
+                            </td>
+                            <td>
+                                @if(userTraining.IsTrainingCompleted.Equals(false))
+                                {
+                                <a id="hrfskill" href="#" onclick="SkillTrainingMarkAsCompleted(@userTraining.TrainingId)" class="sta-adminbt">Mark As Completed</a>
+                                }
+
+                            </td>
+                            <td>
+                                @userTraining.CompletionDate
+                            </td>
+                            <td>
+                                @userTraining.AdminApprovalStatus
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>*@
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <div class="col-md-12 pL0 pR0">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Role Based Training</h1>
+
+                    </header>
+                </article>
+            </div>
+                <div class="col-md-12" id="dvRole">
+                    @Html.Partial("RolebasedTrainingUserview", Model.RoleBasedTrainings)
+                    @*<table class="table table-bordered admin-onbrdtble">
+                    <thead>
+                        <tr>
+                            <th>
+                                Training Name
+                            </th>
+                            <th>
+                                Mark As Complete
+                            </th>
+                            <th>
+                                Completion Date
+                            </th>
+                            <th>
+                                Admin Approval Status
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (UserTrainingDetail userTraining in Model.RoleBasedTrainings)
+                        {
+                            <tr>
+                                <td>
+                                    @userTraining.TrainingName
+                                </td>
+                                <td>
+                                    @if (userTraining.IsTrainingCompleted.Equals(false))
+                                    {
+                                        <a href="#" onclick="RoleTrainingMarkAsCompleted(@userTraining.TrainingId)" class="sta-adminbt">Mark As Completed</a>
+                                    }
+
+                                </td>
+                                <td>
+                                    @userTraining.CompletionDate
+                                </td>
+                                <td>
+                                    @userTraining.AdminApprovalStatus
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>*@
+                </div>
+            </div>
+
+</section>
+</div>

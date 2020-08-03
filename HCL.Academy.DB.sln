@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCL.Academy.Util", "HCL.Academy.Util\HCL.Academy.Util.csproj", "{3B139CE5-9907-4B13-82D8-80C84BD1C068}"
+	ProjectSection(ProjectDependencies) = postProject
+		{287E9A03-8EAB-40A3-8A45-9CA501BF8228} = {287E9A03-8EAB-40A3-8A45-9CA501BF8228}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCL.Academy.Web", "HCL.Academy.Web\HCL.Academy.Web.csproj", "{769AC549-8A69-44DF-8451-112D3BDA556B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCL.Academy.Model", "HCL.Academy.Model\HCL.Academy.Model.csproj", "{287E9A03-8EAB-40A3-8A45-9CA501BF8228}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCL.Academy.DAL", "HCL.Academy.DAL\HCL.Academy.DAL.csproj", "{DC3B3D1D-0EB0-447E-BD8B-362BF83E9ED1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{287E9A03-8EAB-40A3-8A45-9CA501BF8228} = {287E9A03-8EAB-40A3-8A45-9CA501BF8228}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCL.Academy.Service", "HCL.Academy.Service\HCL.Academy.Service.csproj", "{A1B7405E-585D-4507-9F73-E8D2DD40C1F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCLAcademyEmailJob", "HCLAcademyEmailJob\HCLAcademyEmailJob.csproj", "{03EBBDE5-0DB4-4BE6-AF6E-51A0A2DDF87D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B139CE5-9907-4B13-82D8-80C84BD1C068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B139CE5-9907-4B13-82D8-80C84BD1C068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B139CE5-9907-4B13-82D8-80C84BD1C068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B139CE5-9907-4B13-82D8-80C84BD1C068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{769AC549-8A69-44DF-8451-112D3BDA556B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{769AC549-8A69-44DF-8451-112D3BDA556B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{769AC549-8A69-44DF-8451-112D3BDA556B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{769AC549-8A69-44DF-8451-112D3BDA556B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287E9A03-8EAB-40A3-8A45-9CA501BF8228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287E9A03-8EAB-40A3-8A45-9CA501BF8228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287E9A03-8EAB-40A3-8A45-9CA501BF8228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287E9A03-8EAB-40A3-8A45-9CA501BF8228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC3B3D1D-0EB0-447E-BD8B-362BF83E9ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC3B3D1D-0EB0-447E-BD8B-362BF83E9ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC3B3D1D-0EB0-447E-BD8B-362BF83E9ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC3B3D1D-0EB0-447E-BD8B-362BF83E9ED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B7405E-585D-4507-9F73-E8D2DD40C1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B7405E-585D-4507-9F73-E8D2DD40C1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B7405E-585D-4507-9F73-E8D2DD40C1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B7405E-585D-4507-9F73-E8D2DD40C1F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03EBBDE5-0DB4-4BE6-AF6E-51A0A2DDF87D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03EBBDE5-0DB4-4BE6-AF6E-51A0A2DDF87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03EBBDE5-0DB4-4BE6-AF6E-51A0A2DDF87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03EBBDE5-0DB4-4BE6-AF6E-51A0A2DDF87D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {252413D7-9059-4B4D-B234-3CAB674DDDCE}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://hcldna.visualstudio.com/
+		SccProjectUniqueName0 = HCL.Academy.Util\\HCL.Academy.Util.csproj
+		SccProjectName0 = HCL.Academy.Util
+		SccAuxPath0 = https://hcldna.visualstudio.com
+		SccLocalPath0 = HCL.Academy.Util
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = HCL.Academy.Web\\HCL.Academy.Web.csproj
+		SccProjectName1 = HCL.Academy.Web
+		SccAuxPath1 = https://hcldna.visualstudio.com
+		SccLocalPath1 = HCL.Academy.Web
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+EndGlobal

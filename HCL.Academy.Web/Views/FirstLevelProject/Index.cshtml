@@ -1,0 +1,170 @@
+﻿@model HCL.Academy.Model.Project
+
+@using HCL.Academy.Model;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    <section id="tabs" class="content-wrapper main-content clear-fix container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Account/First Level Project Management</h2>
+                <div class="faq-tabber">    
+                    <ul class="nav nav-tabs" id="projecttab">
+                        <li class="active"><a data-toggle="tab" href="#dvProject">Manage Child Projects</a></li>
+                        @if (ViewBag.IsAcademyAdmin || ViewBag.IsFirstLevelAdmin)
+                        {
+                        <li><a data-toggle="tab" href="#dvProjectAdmin">Manage Account Level Project Admin</a></li>
+                        }
+                    </ul>
+                    <div class="tab-content">
+                        <div id="dvProject" class="tab-pane fade in active">
+                            @if (ViewBag.IsAcademyAdmin || ViewBag.IsFirstLevelAdmin)
+                            {
+                                <div class="row">
+                                    <div class="col-md-3">Add Child Project</div>
+                                    <div class="col-md-3"><input type="text" id="txtProjectName" /></div>
+                                    <div class="col-md-2"><button onclick="AddProject()" class="sta-adminbt">Add Project</button></div>
+                                    <div class="col-md-4">
+                                        <div id="dvErrorMessage" class="text-danger"></div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-12">
+                                    List of child projects :
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="dvChProjPartial">
+                                        @Html.Partial("ChildProjects", Model.childProjects)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (ViewBag.IsAcademyAdmin || ViewBag.IsFirstLevelAdmin)
+                        {
+                            <div id="dvProjectAdmin" class="tab-pane fade">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        Select User to be added as admin
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select id="ddUser" class="form-control">
+                                            @foreach (HCL.Academy.Model.Users u in ViewBag.Users)
+                                            {
+                                                <option value=@u.userID>@u.userName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button onclick="AddAdmin()" class="sta-adminbt">Add Admin</button>
+                                    </div>
+                                    <div class="col-md-5"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered admin-onbrdtble">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        @Html.Label("EmployeeId")
+                                                    </th>
+                                                    <th>
+                                                        @Html.Label("EmailAddress")
+                                                    </th>
+                                                    <th>
+                                                        @Html.Label("Name")
+                                                    </th>
+                                                    <th>
+                                                        Delete
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.projectAdmins)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.EmployeeId)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.EmailAddress)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.ActionLink("Delete", "Delete", "FirstLevelProject", new { id = item.UserId }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        </div>                   
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+  
+    //$(document).ready(function () {
+    //    GetChildProjects();
+    //});
+    function GetChildProjects() {
+        $.ajax({
+            type: "POST",
+            url: "/FirstLevelProject/GetChildProjects",
+            data: { parentProjectId: 0 },
+            success: function (result) { $("#dvChProjPartial").html(result); }
+        })
+    }
+    function AddAdmin() {
+
+        var id = $("#ddUser").val();
+        $.ajax({
+            type: "POST",
+            url: "/FirstLevelProject/AddAdmin",
+            data: { userid: id },
+            success: function (result) { window.location.reload(); }
+        })
+
+    }
+    function AddProject() {
+        var name = $("#txtProjectName").val();
+        if (name.length == 0) {
+            $('#dvErrorMessage').html('Please enter project name');
+            $('#dvErrorMessage').attr("class", "text-danger");
+        }
+        else {
+            if (!/[^a-zA-Z0-9]/.test(name)) {
+                $('#dvMsg').html('');
+                $.ajax({
+                    type: "POST",
+                    url: "/FirstLevelProject/AddProject",
+                    data: { projectname: name },
+                    success: function (result) {
+                        GetChildProjects();
+                        $('#dvErrorMessage').html('Project added successfully');
+                        $('#dvErrorMessage').attr("class", "text-success");
+                    }
+                })
+            }
+            else {
+                $('#dvErrorMessage').html('Project name cannot contain special characters');
+                $('#dvErrorMessage').attr("class", "text-danger");
+            }
+        }
+
+
+    }
+</script>
+

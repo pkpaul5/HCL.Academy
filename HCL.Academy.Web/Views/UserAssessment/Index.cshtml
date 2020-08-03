@@ -1,0 +1,86 @@
+﻿@using HCL.Academy.Model;
+@model List<AcademyJoinersCompletion>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="grayBox">
+            <div class="headerTwo">
+                ASSIGNED ASSESSMENTS
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-6"><b>AssessmentName</b></div>
+                <div class="col-md-2"><b>Status</b></div>
+                <div class="col-md-3"><b>Action</b></div>
+            </div>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">@Model[i].trainingAssessmentLookUpText</div>
+
+                    @if (Model[i].assessmentStatus.ToString().ToUpper() == "TRUE")
+                    {<div class="col-md-2 pull-left">
+                            <span style=" color:#00cc66;">Done</span>
+                        </div>
+                    }
+                    else
+                    { <div class="col-md-2">
+                            <span style=" color:#00cc66;">WIP</span>
+                        </div>
+                    }
+                    <div class="col-md-3">
+                        @if (Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")) <= Convert.ToInt32(Model[i].lastDayCompletion.ToString("yyyyMMdd")) && Model[i].attempts < Model[i].maxAttempts)
+                        {
+                            if (@Model[i].isTrainingLink)
+                            {
+                                <a href="@Model[i].trainingLink" target="_blank" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-play" aria-hidden="true"></i></a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Index", "Assessment",new { id = Model[i].id })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank" data-toggle="confirmation" data-singleton="true">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+
+                            if (Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")) > Convert.ToInt32(Model[i].lastDayCompletion.ToString("yyyyMMdd")))
+                            {
+                                if (Model[i].isTrainingLink)
+                                {
+                                    <a href="@Model[i].trainingLink" target="_blank" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-play"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Index", "Assessment",new { id = Model[i].id })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank" onclick="javascript:return false;" title="Due Date Passed">
+                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                if (Model[i].isTrainingLink)
+                                {
+                                    <a href="@Model[i].trainingLink" target="_blank" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-play"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Index", "Assessment",new { id = Model[i].id })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank" onclick="javascript:return false;" title="Maximum Attempts exceeded">
+                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                    </a>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </section>
+</div>

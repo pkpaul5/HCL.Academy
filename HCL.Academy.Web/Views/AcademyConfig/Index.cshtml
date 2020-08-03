@@ -1,0 +1,72 @@
+﻿@model IEnumerable<HCL.Academy.Model.AcademyConfig>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+    @if (TempData["CreateSuccess"] != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Record created successfully!');
+
+            });
+
+        </script>
+    }
+    else if (TempData["DeleteMessage"] != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Record deleted successfully!');
+
+            });
+
+        </script>
+    }
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row"><div class="col-md-12"><h2>Maintenance Of Configuration</h2></div></div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "AcademyConfig")' class="btn btn-primary" role="button">Add Configuration</a></div></div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered admin-onbrdtble">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Value)
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Value)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                    @*@Html.ActionLink("Details", "Details", new { id = item.ID }) |*@
+                                    @Html.ActionLink("Delete", "Delete", "AcademyConfig", new { id = item.ID }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

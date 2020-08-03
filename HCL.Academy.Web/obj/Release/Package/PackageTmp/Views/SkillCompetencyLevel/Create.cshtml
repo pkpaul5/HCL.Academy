@@ -1,0 +1,360 @@
+﻿@using HCL.Academy.Model;
+@model dynamic
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .newFormAddLevel {
+        padding: 5px;
+    }
+
+    .mandatoryField {
+        color: red;
+    }
+
+    .errSkill, .errCompetency, .errMandatory, .errDescription,
+    .errProfSkill, .errSoftSkill, .errNullLevelOrder, .errNaNLevelOrder,
+    .errRangeLevelOrder, .errNullTrainingPoints, .errNaNTrainingPoints, .errRangeTrainingPoints,
+    .errNullAssessmentPoints, .errNaNAssessmentPoints, .errRangeAssessmentPoints {
+        margin-left: 16px;
+        color: red;
+        display: none;
+    }
+
+    .pL0 {
+        padding-left: 0px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#ddSkill').on('change', function () {
+            $('.errSkill').hide();
+        });
+        $('#ddCompetency').on('change', function () {
+            $('.errCompetency').hide();
+        });
+
+        $('#txtDescription').on('input propertychange paste', function () {
+            $('.errDescription').hide();
+        });
+
+        $('#inputProfSkill').on('input propertychange paste', function () {
+            $('.errProfSkill').hide();
+        });
+
+        $('#inputSoftSkill').on('input propertychange paste', function () {
+            $('.errSoftSkill').hide();
+        });
+        $('#inputLevelOrder').on('input propertychange paste', function () {
+            $('.errNullLevelOrder').hide();
+            $('.errNaNLevelOrder').hide();
+            $('.errRangeLevelOrder').hide();
+        });
+        $('#inputTrainingPoints').on('input propertychange paste', function () {
+            $('.errNullTrainingPoints').hide();
+            $('.errNaNTrainingPoints').hide();
+            $('.errRangeTrainingPoints').hide();
+        });
+        $('#inputAssessmentPoints').on('input propertychange paste', function () {
+            $('.errNullAssessmentPoints').hide();
+            $('.errNaNAssessmentPoints').hide();
+            $('.errRangeAssessmentPoints').hide();
+        });
+
+        $("#ddSkill").prepend("<option value='-1'>Please select skill</option>");
+        $("#ddSkill option:first").attr("selected", "selected");
+        $("#ddCompetency").prepend("<option value='-1'>Please select competency level</option>");
+        $("#ddCompetency option:first").attr("selected", "selected");
+    });
+    function clearData() {
+        $('#ddSkill').val("-1");
+        $('#ddCompetency').val("-1");
+        $('#txtDescription').val("");
+        $('#inputProfSkill').val("");
+        $('#inputSoftSkill').val("");
+        $('#inputLevelOrder').val("");
+        $('#inputTrainingPoints').val("");
+        $('#inputAssessmentPoints').val("");
+
+        $('.errSkill').hide();
+        $('.errCompetency').hide();
+        $('.errDescription').hide();
+        $('.errProfSkill').hide();
+        $('.errSoftSkill').hide();
+        $('.errNullLevelOrder').hide();
+        $('.errNaNLevelOrder').hide();
+        $('.errRangeLevelOrder').hide();
+        $('.errNullTrainingPoints').hide();
+        $('.errNaNTrainingPoints').hide();
+        $('.errRangeTrainingPoints').hide();
+        $('.errNullAssessmentPoints').hide();
+        $('.errNaNAssessmentPoints').hide();
+        $('.errRangeAssessmentPoints').hide();
+
+    }
+    function postRoleTraining() {
+        var isValidated = true;
+        var training = $('#ddTraining').val();
+        var role = $('#ddRole').val();
+        var isMandatory = $('#ddMandaotry').val();
+        if (training == "-1") {
+            $('.errTraining').show();
+            isValidated = false;
+            //return;
+        }
+        if (role == "-1") {
+            $('.errRole').show();
+            isValidated = false;
+            //return;
+        }
+        if (isMandatory == "-1") {
+            $('.errMandatory').show();
+            isValidated = false;
+            //return;
+        }
+        if (isValidated == true) {
+            var PostData = {
+                trainingId: training,
+                roleId: role,
+                isMandatory: isMandatory == 1 ? true : false
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/RoleTraining/PostRoleTraining",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    if (result) {
+                        alert("Record added successfully.");
+
+
+                    }
+                    else {
+                        alert("Entered training and role combination exists. Please try with another.");
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+    }
+    function postSkillCompetencyLevel() {
+        var isValidated = true;
+        var skill = $('#ddSkill').val();
+        var competency = $('#ddCompetency').val();
+        var description = $('#txtDescription').val();
+        var professionalSkill = $('#inputProfSkill').val();
+        var softSkill = $('#inputSoftSkill').val();
+        var compOrder = $('#inputLevelOrder').val();
+        var trainingCompletionPoints = $('#inputTrainingPoints').val();
+        var assessmentCompletionPoints = $('#inputAssessmentPoints').val();
+
+
+        if (skill == "-1") {
+            $('.errSkill').show();
+            isValidated = false;
+        }
+
+        if (competency == "-1") {
+            $('.errCompetency').show();
+            isValidated = false;
+        }
+        if (description.trim() == "") {
+            $('.errDescription').show();
+            isValidated = false;
+
+        }
+        if (professionalSkill.trim() == "") {
+            $('.errProfSkill').show();
+            isValidated = false;
+        }
+        if (softSkill.trim() == "") {
+            $('.errSoftSkill').show();
+            isValidated = false;
+        }
+        if (compOrder.trim() == "") {
+            $('.errNullLevelOrder').show();
+            isValidated = false;
+        }
+        else if (isNaN(compOrder)) {
+            $('.errNaNLevelOrder').show();
+            isValidated = false;
+        }
+        else if (compOrder < 1 || compOrder > 5) {
+            $('.errRangeLevelOrder').show();
+            isValidated = false;
+        }
+
+        if (trainingCompletionPoints.trim() == "") {
+            $('.errNullTrainingPoints').show();
+            isValidated = false;
+        }
+        else if (isNaN(trainingCompletionPoints.trim())) {
+            $('.errNaNTrainingPoints').show();
+            isValidated = false;
+        }
+        else if (trainingCompletionPoints.trim() < 0) {
+            $('.errRangeTrainingPoints').show();
+            isValidated = false;
+        }
+
+        if (assessmentCompletionPoints.trim() == "") {
+            $('.errNullAssessmentPoints').show();
+            isValidated = false;
+        }
+        else if (isNaN(assessmentCompletionPoints.trim())) {
+            $('.errNaNAssessmentPoints').show();
+            isValidated = false;
+        }
+        else if (assessmentCompletionPoints.trim() < 0) {
+            $('.errRangeAssessmentPoints').show();
+            isValidated = false;
+        }
+
+
+
+        if (isValidated == true) {
+
+            var PostData = {
+                skill: skill,
+                competence: competency,
+                description: description.trim(),
+                professionalskill: professionalSkill.trim(),
+                softskill: softSkill.trim(),
+                comporder: compOrder,
+                trainingcompletionpoints: trainingCompletionPoints.trim(),
+                assessmentcompletionpoints: assessmentCompletionPoints.trim()
+
+            };
+            console.log(PostData);
+
+            $.ajax({
+                type: "POST",
+                url: "/SkillCompetencyLevel/PostSkillCompetencyLevel",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    if (result) {
+                        alert("Record added successfully");
+
+                    }
+                    else {
+                        alert("Entered skill and competency combination exists");
+
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+    }
+</script>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li>@Html.ActionLink("Skill Competency Level List", "Index")</li>
+                <li class="active">Create Skill Competency Level</li>
+            </ul>
+            <div class="row">
+                <div class="col-md-12"><h2>Create Skill Competency Level</h2></div>
+            </div>
+
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Skill <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    @Html.DropDownList("ddSkill", new SelectList(Model.Skills, "SkillId", "SkillName"),
+                        new
+                        {
+                            @id = "ddSkill",
+                            @class = "form-control"
+
+                        })
+                    <span class="errSkill">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Competence <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    @Html.DropDownList("ddCompetency", new SelectList(Model.Competencies, "CompetenceId", "CompetenceName"),
+                        new
+                        {
+                            @id = "ddCompetency",
+                            @class = "form-control"
+
+
+                        })
+                    <span class="errCompetency">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Description <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    <textarea class="form-control" rows="5" id="txtDescription"></textarea>
+                    <span class="errDescription">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Professional Skill <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    <input type="text" class="form-control" id="inputProfSkill" />
+                    <span class="errProfSkill">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Soft Skill <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    <input type="text" class="form-control" id="inputSoftSkill" />
+                    <span class="errSoftSkill">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Competency Level Order <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    <input type="text" class="form-control" id="inputLevelOrder" />
+                    <span class="errNullLevelOrder">This field is required</span>
+                    <span class="errNaNLevelOrder">Please enter a valid number</span>
+                    <span class="errRangeLevelOrder">Value must be between 1 and 5</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Training Completion points <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    <input type="text" class="editedRole form-control" id="inputTrainingPoints" />
+                    <span class="errNullTrainingPoints">This field is required</span>
+                    <span class="errNaNTrainingPoints">Please enter a valid number</span>
+                    <span class="errRangeTrainingPoints">Value must be > 0</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="padding:5px;font-size:14px"><h4>Assessment Completion points <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-6 pL0">
+                    <input type="text" class="editedRole form-control" id="inputAssessmentPoints" />
+                    <span class="errNullAssessmentPoints">This field is required</span>
+                    <span class="errNaNAssessmentPoints">Please enter a valid number</span>
+                    <span class="errRangeAssessmentPoints">Value must be > 0</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-3" style="text-align:right;padding:5px;font-size:14px;"></div>
+                <div class="col-md-6 pL0">
+                    <input type="button" class="btn btn-default" onclick="postSkillCompetencyLevel()" value="Save" />
+                    <input type="button" class="btn btn-default" onclick="clearData()" value="Clear" />
+                </div>
+                /div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+

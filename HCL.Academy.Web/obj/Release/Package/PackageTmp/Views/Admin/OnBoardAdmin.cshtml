@@ -1,0 +1,512 @@
+﻿@model HCL.Academy.Model.UserOnBoarding
+@using HCL.Academy.Model;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+    <section id="tabs" class="project-tab">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    @*<section class="content-wrapper main-content clear-fix container">*@
+                    <h2>Onboarding Admin</h2>
+                    <div class="faq-tabber">
+                        <br />
+                        <ul class="nav nav-tabs" id="useronboardingtab">
+                            <li class="active"><a data-toggle="tab" href="#divOnBoardReport">View Report</a></li>
+                            <li><a data-toggle="tab" href="#divOnBoardUser">Onboard User</a></li>
+                            <li><a data-toggle="tab" href="#divOffBoardUser">Offboard User</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="divOnBoardReport" class="tab-pane fade in active">
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @*<div class="onbrd-form">*@
+                                        <select id="project" class="form-control">
+                                            <option value="0">All Projects</option>
+                                            @foreach (Project proj in Model.Projects)
+                                            {
+                                                <option value=@proj.id>@proj.projectName</option>
+                                            }
+                                        </select>
+                                        @*</div>*@
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select id="ddGEOReport" class="form-control">
+                                            <option value="0">All GEOs</option>
+                                            @foreach (GEO geo in Model.GEOs)
+                                            {
+                                                <option value=@geo.Id>@geo.Title</option>
+                                            }
+                                        </select>                                        
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select id="ddRoleReport" class="form-control">
+                                            <option value="0">All Roles</option>
+                                            @foreach (Role role in Model.Roles)
+                                            {
+                                                <option value=@role.Id>@role.Title</option>
+                                            }
+                                        </select>                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="btn-group">
+                                            <button onclick="GetOnBoardReport()" class="sta-adminbt">Get Report</button>
+                                            <a href="#" id="downloadLink" target="_self" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</a>
+                                        </div>
+                                        
+                                    </div>                                   
+                                    <div class="col-md-2">
+                                        @*<a href="#" id="downloadPdf" target="_self" class="sta-adminbt">PDF Download</a>*@
+                                    </div>
+                                </div>
+                                <div class="row" id="divAcademyOnboardingReports"></div>
+                            </div>
+                            <div id="divOnBoardUser" class="tab-pane fade">
+                                <br />
+                                <ul class="nav nav-tabs" id="onboardusertab">
+                                    <li class="active"><a data-toggle="tab" href="#divOnBoardSingleUser">Onboard Single User</a></li>
+                                    <li><a data-toggle="tab" href="#divOnBoardBulk">Onboard Bulk User</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="divOnBoardSingleUser">
+                                        <div class="form-group col-md-3 col-sm-3 col-xs-12">
+                                            <span class="entr-emailonbrd">Please Enter User Email</span>
+                                        </div>
+                                        <div class="form-group col-md-5 col-sm-5 col-xs-12">
+                                            <input id="txtUserEmail" name="txtUserEmail" type="email" class="form-control" value="" placeholder="Email"
+                                                   onkeydown="if (event.keyCode == 13) $('#icnSearchUser').click()">
+                                            <span class="error" id="EmailError" style="display:none; margin-left: 10px;">Please Enter Valid Email</span>
+                                            <span class="error" id="EmailNotFound" style="display:none; margin-left: 10px;">User not found</span>
+                                            <span class="error" id="EmailNotAdded" style="display:none; margin-left: 10px;">Please Add User First</span>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-2 check">
+                                            @*<i class="fa fa-plus-circle btn-adminonbrd" aria-hidden="true" onclick="CheckUser('OnBoard')"></i>*@
+                                            <a href="javascript:void(0);"> <i class="fa fa-search btn-adminonbrd" id="icnSearchUser" aria-hidden="true" onclick="CheckUser('OnBoard')"></i> </a>
+                                            @*<i class="fa fa-plus-circle" aria-hidden="true" id="btnSearch" ></i>*@
+                                        </div>
+                                    </div>
+                                    <div class="row" id="divAcademyOnboarding"></div>
+                                    <div id="divOnBoardBulk" class="tab-pane fade">
+
+                                        <div id="FormContent">
+                                            <form id="FormUpload" enctype="multipart/form-data" method="post">
+
+                                                <div class="top-mrg">
+                                                    <span class="pull-left fileinput-button" style="color:#ff6200;">
+                                                        <input type="file" name="UploadedFile" id="UploadedFile" />
+                                                    </span>
+                                                    <button class="btn btn-primary start col-md-offset-1 pull-left" type="button" id="Submit_btn" onclick="UploadOnboardingFile()">
+                                                        <i class="glyphicon glyphicon-upload"></i>
+                                                        <span>Start upload</span>
+                                                    </button>
+                                                    <span class="pull-left fileinput-button" style="color:#fff; margin-left:50px">
+                                                        <a href="~/Content/Sample.xlsx" title="Download Sample"><i class="fa fa-download fa-2x" aria-hidden="true"></i></a>
+                                                    </span>
+                                                    <div class="spacer"></div>
+                                                </div>
+                                            </form>
+
+
+                                        </div>
+                                        <div id="lblmessage" style="display:none"></div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" id="divStartUpload"></div>
+                            <div id="divOffBoardUser" class="tab-pane fade">
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="onbrd-form">
+                                            <div>
+                                                <div class="form-group col-md-2 col-sm-2 col-xs-12">
+                                                    <span class="entr-emailonbrd">Please Enter User Email</span>
+                                                </div>
+                                                <div class="form-group col-md-5 col-sm-5 col-xs-12">
+                                                    <input id="txtOffBoardUserEmail" name="txtUserEmail" type="email" class="form-control" value="" placeholder="Email"
+                                                           onkeydown="if (event.keyCode == 13) $('#icnSearchUser').click()">
+                                                    <span class="error" id="OffBoardEmailError" style="display:none; margin-left: 10px;">Please Enter Valid Email</span>
+                                                    <span class="error" id="OffBoardEmailNotFound" style="display:none; margin-left: 10px;">User not found</span>
+                                                    <span class="error" id="OffBoardEmailNotAdded" style="display:none; margin-left: 10px;">Please Add User First</span>
+                                                </div>
+                                                <div class="col-md-5 col-sm-5 col-xs-2 check">
+                                                    <input type="button" id="btnOffBoardUser" class="sta-adminbt" onclick="CheckOffBoardUser()" value="OffBoard User" />
+                                                    <div id="divAcademyOffboarding"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    @*</section>*@
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+<script type="text/javascript">
+    $('#onboardusertab a').on('click', function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+        $('#divStartUpload').html("");
+        $('#divAcademyOnboarding').html("");
+        $('#divAcademyOffboarding').html("");
+    })
+
+    $('#useronboardingtab a').on('click', function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+        $('#divStartUpload').html("");
+        $('#divAcademyOnboarding').html("");
+        $('#divAcademyOffboarding').html("");
+
+    })
+
+    var tableBody = $('#tblUser tbody');
+    $(document).ready(function () {
+
+
+        $('#downloadLink').click(function (e) {
+                debugger;
+                var role = $('#ddRoleReport').val();
+                var geo = $('#ddGEOReport').val();
+                var project = $('#project').val();
+             //   $("#divAcademyOnboardingReports"). $('#myModal').modal('show');
+               // e.preventDefault();
+                //ar url = '@Url.Action("DownloadReportToExcel","Admin")';
+                var url = "/Admin/DownloadReportToExcel?projectId=" + project + "&roleId=" + role + "&geoId=" + geo;
+            $.get("/Admin/FakeAjaxCall", function () {
+
+                window.location.href = url;
+            });
+                //.done(function () {
+                //    window.setTimeout(function () {
+                //       // $('#myModal').modal('hide');
+                //    }, 2000);
+                //});
+
+        });
+
+        $('#downloadPdf').click(function (e) {
+
+                //$('#myModal').modal('show');
+                //e.preventDefault();
+                var status = $("#status").val();
+                var role = $('#ddRoleReport').val();
+                var geo = $('#ddGEOReport').val();
+                var project = $('#project').val();
+                var url = "/Admin/DownloadReportToPDF?projectId=" + project + "&roleId=" + role + "&geoId=" + geo;
+               // var url = '@Url.Action("DownloadReportToPDF", "Admin")';
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                });
+                //.done(function () {
+                //    window.setTimeout(function () {
+                //        $('#myModal').modal('hide');
+                //    }, 2000);
+                //});
+
+        });
+        // Validate Email
+        $("#txtUserEmail").on('input', function () {
+            var input = $(this);
+            var is_location = input.val();
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            $('#divCongratesPan').hide();
+
+            if (regex.test(is_location)) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#EmailError").css('display', 'none');
+                $("#EmailNotFound").css('display', 'none');
+                $("#EmailNotAdded").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#EmailError").css('display', 'block');
+                $("#EmailNotFound").css('display', 'none');
+                $("#EmailNotAdded").css('display', 'none');
+            }
+        });
+        $("#txtOffBoardUserEmail").on('input', function () {
+            var input = $(this);
+            var is_location = input.val();
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            $('#divCongratesPan').hide();
+
+            if (regex.test(is_location)) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#OffBoardEmailError").css('display', 'none');
+                $("#OffBoardEmailNotFound").css('display', 'none');
+                $("#OffBoardEmailNotAdded").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#OffBoardEmailError").css('display', 'block');
+                $("#OffBoardEmailNotFound").css('display', 'none');
+                $("#OffBoardEmailNotAdded").css('display', 'none');
+            }
+        });
+        $("#txtUserEmailAssignments").on('input', function () {
+            var input = $(this);
+            var is_location = input.val();
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            $('#divCongratesPan').hide();
+
+            if (regex.test(is_location)) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#EmailErrorAssignments").css('display', 'none');
+                $("#EmailNotFoundAssignments").css('display', 'none');
+                $("#EmailNotAddedAssignments").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#EmailErrorAssignments").css('display', 'block');
+                $("#EmailNotFoundAssignments").css('display', 'none');
+                $("#EmailNotAddedAssignments").css('display', 'none');
+            }
+        });
+
+        // Validate Skill for Training and Assessment
+        $("#ddSkill").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#SkillError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#SkillError").css('display', 'block');
+            }
+        });
+
+        // Validate AssignTo for Training and Assessment
+        $("#ddAssignedTo").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#AssignToError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#AssignToError").css('display', 'block');
+            }
+        });
+        $('#ddAssignedTo').append($('<option>', { value: 0 }).text("All"));
+
+
+    });
+
+    $('#dtLastDayCompletion').datepicker({
+        format: 'yyyy-mm-dd',
+        todaybtn: true,
+        autoclose: true,
+        todayhighlight: true,
+        orientation: "auto"
+    });
+
+    $('#dtLastDayCompletionForAssmnt').datepicker({
+        format: 'yyyy-mm-dd',
+        todaybtn: true,
+        autoclose: true,
+        todayhighlight: true,
+        orientation: "auto"
+    });
+
+    function UploadOnboardingFile() {
+
+
+
+        $("#divStartUpload").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+        var form = $('#FormUpload')[0];
+        var dataString = new FormData(form);
+        $.ajax({
+            url: '/Admin/UploadOnboardFile',
+            type: 'POST',
+            data: dataString,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false,
+            //Ajax events
+            success: function (responce) {
+                $("#divStartUpload").html("");
+                $("#lblmessage").show().html(responce.message);
+            },
+            failure: function (response) {
+                alert(responce.message);
+            }
+        });
+    }
+
+    function CheckOffBoardUser() {
+        debugger;
+        var textboxvalue = $("#txtOffBoardUserEmail").val();
+
+        $("#divAcademyOnboarding").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+        var isValid = true;
+
+        var valid1 = $("#txtOffBoardUserEmail").hasClass("valid");
+        if (!valid1) {
+            isValid = false;
+            $("#txtOffBoardUserEmail").css('border', '2px solid red');
+            $("#OffBoardEmailError").css('display', 'block');
+            $("#OffBoardEmailNotAdded").css('display', 'none');
+            $("#divAcademyOnboarding").html("");
+        }
+
+        if (isValid) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/EmailSearch",
+                data: {
+                    keyword: textboxvalue
+                },
+                success: function (result) {
+                    $("#OffBoardEmailError").css('display', 'none');
+                    $("#OffBoardEmailNotFound").css('display', 'none');
+                    $("#OffBoardEmailNotAdded").css('display', 'none');
+                  //  $("#txtOffBoardUserEmail").css('border', 'none');
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/OffBoardUser",
+                        data: {
+                            email: textboxvalue
+                        },
+                        success: function (result1) {
+                            $("#divAcademyOffboarding").html(result1);
+
+                        }
+                    })
+
+                },
+                error: function () {
+                    $("#OffBoardEmailError").css('border', '2px solid red');
+                    $("#OffBoardEmailNotFound").css('display', 'block');
+                    $("#OffBoardEmailNotAdded").css('display', 'none');
+                   // $("#txtOffBoardUserEmail").css('display', 'none');
+                    $("#divAcademyOffboarding").html("");
+                }
+            });
+        }
+    }
+
+    function CheckUser() {
+
+        var textboxvalue = $("#txtUserEmail").val();
+
+        $("#divAcademyOnboarding").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+        var isValid = true;
+
+        var valid1 = $("#txtUserEmail").hasClass("valid");
+        if (!valid1) {
+            isValid = false;
+            $("#txtUserEmail").css('border', '2px solid red');
+            $("#EmailError").css('display', 'block');
+            $("#EmailNotAdded").css('display', 'none');
+            $("#divAcademyOnboarding").html("");
+        }
+
+        if (isValid) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/EmailSearch",
+                data: {
+                    keyword: textboxvalue
+                },
+                success: function (result) {
+                    $("#EmailError").css('display', 'none');
+                    $("#EmailNotFound").css('display', 'none');
+                    $("#EmailNotAdded").css('display', 'none');
+                    $("#txtUserEmail").css('border', 'none');
+                    //var resultStr = "<tr class='data-Added-person-row'><td>" + result.Name + "</td><td class='data-Added-person-email'>" + result.Email +
+                    //                    "</td><td class='delete-bt'><i class='fa fa-times' aria-hidden='true'></i></td></tr>";
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/UserOnBoarding",
+                        data: {
+                            onboardedUser: result
+                        },
+                        success: function (result1) {
+                            $("#divAcademyOnboarding").html(result1);
+                            //$("#txtUserEmail").val(textboxvalue);
+                        }
+                    })
+
+                    //   $("#txtUserEmail").val("");
+
+                },
+                error: function () {
+                    $("#txtUserEmail").css('border', '2px solid red');
+                    $("#EmailNotFound").css('display', 'block');
+                    $("#EmailError").css('display', 'none');
+                    $("#EmailNotAdded").css('display', 'none');
+                    $("#divAcademyOnboarding").html("");
+                }
+            });
+        }
+    }
+   
+
+    function GetDownloadExcelUrl() {
+
+        var status = $("#status").val();
+        var url = '@Url.Action("DownloadReportToExcel","Admin")?status=' + status;
+    }
+    function DownloadReport() {
+        var status = $('#status').val();
+        if (status != "") {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DownloadReportToExcel",
+                data: {
+                    status: status,
+                    roleId: role,
+                    geoId: geo
+                },
+                success: function (result) {
+                }
+            });
+        }
+        else {
+            alert("Please Select Status");
+        }
+    }
+
+    function getHtmlBody(msg1, msg2) {
+        var html = "<div class='col-md-6'><div class='congrats-pan'><h4>" + msg1 + "</h4><h5>" + msg2 + "</h5></div></div>"
+        return html;
+    }
+</script>

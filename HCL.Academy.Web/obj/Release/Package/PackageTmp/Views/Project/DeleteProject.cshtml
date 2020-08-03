@@ -1,0 +1,12 @@
+﻿@model HCL.Academy.Model.Project
+
+<div id="body">
+    <p>
+        There was an error while deleting the Project:
+    </p>
+    @Html.DisplayNameFor(model => model.projectName)
+    <ul class="breadcrumb">
+        <li>@Html.ActionLink("Projects", "AddProject", "Project")</li>
+        <li class="active">Delete Project</li>
+    </ul>
+</div>

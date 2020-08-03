@@ -1,0 +1,97 @@
+﻿@using HCLAcademy.Util;
+@using System.Configuration;
+@model HCL.Academy.Model.HomeViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    <div class="flexslider container">
+        <ul class="slides">
+            @{
+                string bannerFiles = ConfigurationManager.AppSettings["BannerFiles"].ToString();
+                string[] bannerFilesArr = bannerFiles.Split('|');
+
+                foreach (var bannerFile in bannerFilesArr)
+                {
+                    <li><img src="~/Images/Banner/@bannerFile" class="img-responsive" alt="" /></li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="container">
+        <div class="row display-flex">
+            <div class="col-xs-6 col-md-4">
+                <div class="panel panel-default"><div class="panel-body">  @Html.Partial("SkillTraining", Model.skillTrainings)</div></div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <div class="panel panel-default"><div class="panel-body"> @Html.Partial("Skills", Model.skills)</div></div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <div class="panel panel-default"><div class="panel-body"> @Html.Partial("Checklist", Model.checklist)</div></div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <div class="panel panel-default"><div class="panel-body">@Html.Partial("RoleTraining", Model.roleTrainings)</div></div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <div class="panel panel-default"><div class="panel-body">@Html.Partial("Assessment", Model.assessments)</div></div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div>
+                            <span class="headerTwoText">NEWS</span>
+                            <a class="seeMoreNew" href='@Url.Action("NewsEvents", "News")'>See More</a>
+                        </div>
+                        <br />
+                        <div class="grayBoxBottom">
+                            @{
+                                string newsSource = ConfigurationManager.AppSettings["NewsSource"].ToString();
+                                if (newsSource.Equals("Feed"))
+                                {
+                                    @Html.Partial("_RssFeed", Model.rssFeed)
+                                }
+                                else
+                                {
+                                    @Html.Partial("_News", Model.news)
+                                }
+                            }
+                        </div>
+                        <div>
+                            <span class="headerTwoText">EVENTS</span>
+                        </div>
+                        <br />
+                        <div class="grayBoxBottom">
+                            @Html.Partial("_Events", Model.events)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .row.display-flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+        .row.display-flex > [class*='col-'] {
+            display: flex;
+            flex-direction: column;
+        }
+
+    /* not requied only for demo * */
+    .row [class*='col-'] {
+        background-clip: content-box;
+    }
+
+    .panel {
+        height: 100%;
+        background-color: #e6eaed;
+    }
+</style>

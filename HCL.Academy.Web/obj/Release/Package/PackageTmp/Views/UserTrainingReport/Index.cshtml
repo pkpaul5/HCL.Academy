@@ -1,0 +1,78 @@
+﻿@using HCL.Academy.Model;
+
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+
+    })
+    function Download()
+    {
+      var role = $("#ddRoleReport").val();
+      var selectedProjectId = $("#project").val();
+      var url = '@Url.Action("DownloadReportToExcel", "UserTrainingReport")?projectid=' + selectedProjectId + '&roleid=' + role;
+      $.get("/Admin/FakeAjaxCall", function () { window.location.href = url; }).done(function () {
+             window.setTimeout(function () { $('#myModal').modal('hide'); }, 2000);
+         });
+    }
+    function GetTrainingReport() {
+        var project = $("#project").val();
+        var role = $("#ddRoleReport").val();
+        
+        var PostData = { projectid: project, roleid: role };
+        $.ajax({
+            type: "POST",
+            url: "/UserTrainingReport/GetTrainingsReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                $('#dvReport').html(result);
+            }
+        });
+    }
+</script>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row form-group"><div class="col-md-12"><h2>User Training Report</h2></div></div>
+        <div class="row form-group">
+            <div class="col-md-1">Project</div>
+            <div class="col-md-3 pull-left">
+                <select id="project" class="form-control">
+                    <option value="0">All Projects</option>
+                    @foreach (Project proj in ViewBag.Projects)
+                    {
+                        <option value=@proj.id>@proj.projectName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-1">Role</div>
+            <div class="col-md-3 pull-left">
+                <select id="ddRoleReport" class="form-control">
+                    <option value="0">All Roles</option>
+                    @foreach (Role role in ViewBag.Roles)
+                    {
+                        <option value=@role.Id>@role.Title</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button onclick="GetTrainingReport()" class="sta-adminbt">Get Report</button>
+                    <button onclick="Download()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="dvReport">              
+            </div>
+        </div>
+
+
+    </section>
+</div>

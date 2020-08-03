@@ -1,0 +1,56 @@
+﻿@using HCL.Academy.Model;
+@model IEnumerable<HCL.Academy.Model.UserOnBoarding>
+<div class="table-responsive">
+    <table class="table table-bordered admin-onbrdtble" id="onboard-data-table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                @if (ViewBag.Skills != null)
+                {
+                    foreach (Skill sk in ViewBag.Skills)
+                    {
+                        <th style="width:50px;background-color:cornflowerblue;color:white">@sk.SkillName</th>
+                    }
+                }
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                @foreach (UserSkill u in item.UserSkills)
+                {
+                    if (u.Competence.ToUpper() == "NOVICE")
+                    {
+                        <td style="background-color:red;color:white">@u.Competence </td>
+                    }
+                    else if (u.Competence.ToUpper() == "ADVANCED BEGINNER")
+                    {
+                        <td style="background-color:#FFCC33;color:white">@u.Competence </td>
+                    }
+                    else if (u.Competence.ToUpper() == "COMPETENT")
+                    {
+                        <td style="background-color:lightskyblue;color:white;">@u.Competence </td>
+                    }
+                    else if (u.Competence.ToUpper() == "PROFICIENT")
+                    {
+                        <td style="background-color:#CC9966;color:white">@u.Competence </td>
+                    }
+                    else if (u.Competence.ToUpper() == "EXPERT")
+                    {
+                        <td style="background-color:#33CC99;color:white">@u.Competence </td>
+                    }
+                    else if (u.Competence.ToUpper() == "")
+                    {
+                        <td></td>
+                    }
+                }
+            </tr>
+        }
+
+    </table>
+</div>

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<HCL.Academy.Model.TrainingMaster>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div id="body">
+    @*@if (TempData["Message"] != null)
+        {
+            <script>
+
+            $(document).ready(function(){
+
+            alert('@TempData["Message"]');
+
+            });
+
+            </script>
+
+        }*@
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row"><div class="col-md-12"><h2>Maintenance Of Training</h2></div></div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "TrainingMaster")' class="btn btn-primary" role="button">Add Training</a></div></div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered admin-onbrdtble">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.Label("Title")
+                            </th>
+                            @*<th>
+                                    @Html.Label("Description")
+                                </th>*@
+                            <th>
+                                @Html.Label("Skill Type")
+                            </th>
+                            <th>
+                                @Html.Label("Training Category")
+                            </th>
+                            <th>
+                                @Html.Label("Training Link")
+                            </th>
+                            <th>
+                                @Html.Label("Training Content")
+                            </th>
+                            <th>
+                                @Html.Label("Training Document")
+                            </th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.title)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.description)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.skillType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.trainingCategory)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.trainingLink)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.selectedContent)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.trainingDocument)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", "TrainingMaster", new { id = item.Id }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

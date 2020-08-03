@@ -1,0 +1,211 @@
+﻿@model HCL.Academy.Model.UserOnBoarding
+@using HCL.Academy.Model;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="faq-tabber">
+            <ul class="nav nav-tabs" id="checklistreporttab">
+                <li class="active"><a data-toggle="tab" href="#dvAllChecklistReport">Checklist Detail Report</a></li>
+                <li><a data-toggle="tab" href="#dvLastChecklistReport">Checklist Current Status</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="dvAllChecklistReport" class="tab-pane fade in active">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            Select Filter Options
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-2">
+                            <select id="project" class="form-control">
+                                <option value="0">All Projects</option>
+                                @foreach (Project proj in Model.Projects)
+                                {
+                                    <option value=@proj.id>@proj.projectName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="ddGEOReport" class="form-control">
+                                <option value="0">All GEOs</option>
+                                @foreach (GEO geo in Model.GEOs)
+                                {
+                                    <option value=@geo.Id>@geo.Title</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="ddRoleReport" class="form-control">
+                                <option value="0">All Roles</option>
+                                @foreach (Role role in Model.Roles)
+                                {
+                                    <option value=@role.Id>@role.Title</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="radio" name="option" checked="checked" value="Name" /><text>Name</text>
+                            <input type="radio" name="option" value="Employee" /><text>Employee ID</text>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBox("Search", "", new { @id = "btnSearch", @class = "form-control" })
+                        </div>                        
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button onclick="GetChecklistReport()" class="sta-adminbt">Get Report</button>
+                                <button onclick="DownloadChecklistReport()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="divChecklistReports"></div>
+                </div>
+                <div id="dvLastChecklistReport" class="tab-pane fade">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <h4>Select Filter Options</h4>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-2">
+                            <select id="ddprojectlastitemreport" class="form-control">
+                                <option value="0">All Projects</option>
+                                @foreach (Project proj in Model.Projects)
+                                {
+                                    <option value=@proj.id>@proj.projectName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="ddGEOlastitemreport" class="form-control">
+                                <option value="0">All GEOs</option>
+                                @foreach (GEO geo in Model.GEOs)
+                                {
+                                    <option value=@geo.Id>@geo.Title</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="ddRolelastitemreport" class="form-control">
+                                <option value="0">All Roles</option>
+                                @foreach (Role role in Model.Roles)
+                                {
+                                    <option value=@role.Id>@role.Title</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="radio" name="option" checked="checked" value="Name" /><text>Name</text>
+                            <input type="radio" name="option" value="Employee" /><text>Employee ID</text>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBox("Search", "", new { @id = "btnSearch", @class = "form-control" })
+                        </div>                        
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button onclick="GetLastChecklistReport()" class="sta-adminbt">Get Report</button>
+                                <button onclick="DownloadLastChecklistItemReport()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="divLastChecklistReports"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        var $radios = $('input:radio[name=option]');
+        if ($radios.is(':checked') == false) {
+            $radios.filter('[value=Name]').prop('checked', true);
+        }
+    });
+
+    function GetChecklistReport() {
+
+        var project = $('#project').val();
+        var role = $('#ddRoleReport').val();
+        var geo = $('#ddGEOReport').val();
+        var radioValue = $("input[name='option']:checked").val();
+        var searchVal = $("input[name='Search']").val();
+        $.ajax({
+            type: "POST",
+            url: "/ChecklistReport/UserChecklistReport",
+            data: {
+                project: project,
+                roleId: role,
+                geoId: geo,
+                option:radioValue,
+                search:searchVal
+            },
+            success: function (result) {
+                $("#divChecklistReports").html(result);
+            }
+        })
+    }
+    function GetLastChecklistReport() {
+
+        var project = $('#ddprojectlastitemreport').val();
+        var role = $('#ddRolelastitemreport').val();
+        var geo = $('#ddGEOlastitemreport').val();
+        var radioValue = $(document.getElementsByName("option")).val();
+        var searchVal = $(document.getElementsByName("Search")).val();
+        $.ajax({
+            type: "POST",
+            url: "/ChecklistReport/LastChecklistReport",
+            data: {
+                project: project,
+                roleId: role,
+                geoId: geo,
+                option: radioValue,
+                search: searchVal
+            },
+            success: function (result) {
+                $("#divLastChecklistReports").html(result);
+            }
+        })
+    }
+    function DownloadChecklistReport()
+    {
+        var project = $('#project').val();
+        var role = $('#ddRoleReport').val();
+        var geo = $('#ddGEOReport').val();
+        var url = '@Url.Action("DownloadChecklistReport", "ChecklistReport")?project=' + project + '&roleId=' + role + '&geoId=' + geo;
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+    }
+    function DownloadLastChecklistItemReport()
+    {
+        var project = $('#ddprojectlastitemreport').val();
+        var role = $('#ddRolelastitemreport').val();
+        var geo = $('#ddGEOlastitemreport').val();
+        var url = '@Url.Action("DownloadLastChecklistItemReport", "ChecklistReport")?project=' + project + '&roleId=' + role + '&geoId=' + geo;
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+    }
+</script>

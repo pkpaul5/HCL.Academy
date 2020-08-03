@@ -1,0 +1,31 @@
+﻿@model HCL.Academy.Model.Project 
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div id="body" class="form-horizontal">
+    <section class="content-wrapper main-content clear-fix container">
+        <ul class="breadcrumb">
+            <li>@Html.ActionLink("First Level Project Management", "Index", "FirstLevelProject")</li>
+            <li>@Html.ActionLink("Second Level Project Management", "ManageChildProject", "SecondLevelProject", new { parentProjectId = Model.parentProjectId }, null)</li>
+            <li class="active">Edit Project</li>
+        </ul>
+        <br />
+        <table class="table table-bordered admin-onbrdtble">
+            <tr>
+                <td>
+                    @Html.Label("Project Name")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.projectName, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td><input type="submit" value="Save" class="btn btn-default" /></td>
+            </tr>
+        </table>
+        @Html.ValidationMessageFor(model => model.projectName, "", new { @class = "text-danger" })
+    </section>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+}
+

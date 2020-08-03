@@ -1,0 +1,1970 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HCL.Academy.Service</name>
+    </assembly>
+    <members>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+            The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForMediaType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Sets the sample directly for all actions with the specified media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.GetModelDescriptionGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the model description generator.
+            </summary>
+            <param name="config">The configuration.</param>
+            <returns>The <see cref="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator"/></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+            Describes a type model.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+            Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+            Use this attribute to change the name of the <see cref="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
+            <summary>
+            Gets or sets the <see cref="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
+            <summary>
+            Gets or sets the documentation for the request.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
+            <summary>
+            Gets or sets the <see cref="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the request body.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
+            <summary>
+            Gets the request body parameter descriptions.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
+            <summary>
+            Gets or sets the <see cref="T:HCL.Academy.Service.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
+            <summary>
+            Gets the resource property descriptions.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:HCL.Academy.Service.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,HCL.Academy.Service.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,HCL.Academy.Service.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters. 
+            First, it will look at the <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create
+            one using <see cref="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.DefaultSampleObjectFactory(HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator,System.Type)"/> (which wraps an <see cref="T:HCL.Academy.Service.Areas.HelpPage.ObjectGenerator"/>) and other
+            factories in <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.ResolveHttpRequestMessageType(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Resolves the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The type.</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},HCL.Academy.Service.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Creates a new <see cref="T:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey"/> based on media type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.#ctor(HCL.Academy.Service.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,HCL.Academy.Service.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:HCL.Academy.Service.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.ImageSample">
+            <summary>
+            This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:HCL.Academy.Service.Areas.HelpPage.ImageSample"/> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.InvalidSample">
+            <summary>
+            This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:HCL.Academy.Service.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:HCL.Academy.Service.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.AcademyConfigController">
+            <summary>
+            This service provides all the AcademyConfig related functionality in HCL Academy
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AcademyConfigController.GetAllAcademyConfig(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the AcademyConfigs that exist in HCL Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AcademyConfigController.GetAcademyConfigById(System.Int32,HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns AcademyConfig record for an ID
+            </summary>
+            <param name="id"></param>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AcademyConfigController.AddAcademyConfig(System.String,System.String,HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method adds a new AcademyConfig to HCL Academy Database
+            </summary>
+            <param name="Title"></param>
+            <param name="Value"></param>
+            <param name="req"></param>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AcademyConfigController.UpdateAcademyConfig(System.Int32,System.String,System.String,HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method updates an existing AcademyConfig
+            </summary>
+            <param name="Id"></param>
+            <param name="Title"></param>
+            <param name="Value"></param>
+            <param name="req"></param>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AcademyConfigController.DeleteAcademyConfig(System.Int32,HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method deletes an AcademyConfig from HCL Academy Database
+            </summary>
+            <param name="id"></param>
+            <param name="req"></param>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.AssessmentController">
+            <summary>
+            This service exposes all the methods related to assessment
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.GetAssessments(HCL.Academy.Model.SkillwiseAssessmentsRequest)">
+            <summary>
+            This method returns assessments based on skill and competency level
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.GetAssessmentDetails(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns assessment detail by id
+            </summary>
+            <param name="request">Client Information</param>
+            <param name="assessmentId">Assessment id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.GetAssessmentForUser(HCL.Academy.Model.UserwiseAssessmentsRequest)">
+            <summary>
+            This method provides list of assigned assessments for a user
+            </summary>
+            <param name="request">User id and client information</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.GetUserAssessmentsByID(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method gives the list of assessments by user id
+            </summary>
+            <param name="request">client info</param>
+            <param name="userId">user id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.GetCurrentUserAssessments(HCL.Academy.Model.RequestBase,System.Int32,System.Boolean)">
+            <summary>
+            This method provides assessment details for currently logged in user
+            </summary>
+            <param name="request"></param>
+            <param name="id">Assessment id</param>
+            <param name="updateAttempts">boolean value</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.GetCurrentUserAssessments(HCL.Academy.Model.RequestBase,System.Boolean)">
+            <summary>
+            Assessments for logged in user
+            </summary>
+            <param name="request">client info</param>
+            <param name="updateAttempts"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.GetUserAssessmentsByAssessmentId(HCL.Academy.Model.RequestBase,System.Int32,System.Int32)">
+            <summary>
+            This method provides details of assigned assessment based on assessment id
+            </summary>
+            <param name="request">Client info</param>
+            <param name="assessmentId">Assessment id</param>
+            /// <param name="projectId">Project id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentController.AssessmentResult(HCL.Academy.Model.AssessmentResultRequest)">
+            <summary>
+            This method updates assessment result
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.AssessmentMasterController">
+            <summary>
+            This service provides all the Assessment master related methods
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentMasterController.GetAllAssessments(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the Assessments in the database
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentMasterController.GetAssessmentById(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns AssessmentMaster
+            </summary>
+            <param name="req"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentMasterController.UpdateAssessmentMaster(HCL.Academy.Model.AssessmentMasterRequest)">
+            <summary>
+            This method updates an existing Assessment
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentMasterController.SaveAssessmentMaster(HCL.Academy.Model.AssessmentMasterRequest)">
+            <summary>
+            This method saves a new Assessment
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentMasterController.DeleteAssessment(System.Int32,HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method deletes Assessment from Academy database
+            </summary>
+            <param name="id"></param>
+            <param name="req"></param>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.AssessmentQuestionController">
+            <summary>
+            This service houses all the method related to AssessmentQuestion table master data 
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentQuestionController.GetAllAssessmentQuestion(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the AssessmentQuestions records
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentQuestionController.GetAssessmentQuestionById(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns an Assessmentquestion by id
+            </summary>
+            <param name="req"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentQuestionController.UpdateAssessmentQuestion(HCL.Academy.Model.AssessmentQuestionRequest)">
+            <summary>
+            This method updates an AssessmentQuestion
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentQuestionController.AddAssessmentQuestion(HCL.Academy.Model.AssessmentQuestionRequest)">
+            <summary>
+            This method adds a new Assessmentqusetion
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.AssessmentQuestionController.DeleteAssessmentQuestion(System.Int32,HCL.Academy.Model.RequestBase)">
+            <summary>
+             This method deletes an AssessmentQuestion record from database
+            </summary>
+            <param name="id"></param>
+            <param name="req"></param>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.ChecklistController">
+            <summary>
+            This service performs all the actions for a checklist
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ChecklistController.GetUserChecklist(HCL.Academy.Model.RequestBase)">
+            <summary>
+            User checklist
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ChecklistController.GetAllChecklist(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Gets a list of all checklists.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ChecklistController.AddChecklist(HCL.Academy.Model.ChecklistRequest)">
+            <summary>
+            This method adds a Checklist.
+            </summary>
+            <param name="checklist"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ChecklistController.UpdateChecklist(HCL.Academy.Model.ChecklistRequest)">
+            <summary>
+            Updates the desired Checklist.
+            </summary>
+            <param name="checklist"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ChecklistController.DeleteChecklist(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method deletes the selected checklist.
+            </summary>
+            <param name="req"></param>
+            <param name="itemId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.CompetencyController">
+            <summary>
+            This service exposes all the methods related to Competency Levels.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.CompetencyController.GetCompetenciesBySkillId(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns all the competency levels based on the skill ID.
+            </summary>
+            <param name="request"></param>
+            <param name="skillId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.CompetencyController.GetCompetenciesBySkillName(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method returns all the competency levels based on skill name. 
+            </summary>
+            <param name="request"></param>
+            <param name="skillName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.CompetencyController.GetUserCompetencyLabel(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            GEts the competency level of the user based on user ID passed.
+            </summary>
+            <param name="request"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.CompetencyController.GetAllCompetenceList(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns a list of all competency levels.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.CompetencyController.GetAllCompetencyLevels(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method fetches all the Competency Levels
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.EmailController">
+            <summary>
+            This service handles all the actions regarding emails.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EmailController.GetEmailTemplates(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Get the list of email templates.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EmailController.AddEmailTemplate(HCL.Academy.Model.EmailTemplateRequest)">
+            <summary>
+            Adds an email template
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EmailController.GetEmailTemplateById(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Gets details of the selected email template.
+            </summary>
+            <param name="req"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EmailController.UpdateEmailTemplate(HCL.Academy.Model.EmailTemplateRequest)">
+            <summary>
+            This method will edit the selected email template.
+            </summary>
+            <param name="requestBase"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EmailController.DeleteEmailTemplate(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method will delete an email template
+            </summary>
+            <param name="req"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.EventsController">
+            <summary>
+            This service exposes all the methods related to Events
+            </summary>
+            
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EventsController.GetEvents(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the events.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EventsController.SaveEvent(HCL.Academy.Model.EventRequest)">
+            <summary>
+            This method adds or updates event data
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.EventsController.DeleteEvent(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method deletes event
+            </summary>
+            <param name="req"></param>
+            /// <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.GeoController">
+            <summary>
+            This service exposes all the methods related to GEOs.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.GeoController.GetAllGEOs(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Returns a list of all GEOs.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.KaliberUserAssessmentController">
+            <summary>
+            This service exposes all the methods related to UserAssessment updation
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.KaliberUserAssessmentController.UpdateUserAssessment(HCL.Academy.Model.KaliberUserAssessmentCollectionRequest)">
+            <summary>
+            This service updates user scores in userassessment table.
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.MenuController">
+            <summary>
+            This service exposes all the methods related to the Menu
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.MenuController.GetMenu(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method fetches the menu based on user role and authentication.
+            </summary>
+            <param name="request"></param>
+            <param name="roleid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.NewsController">
+            <summary>
+            This service exposes all the methods related to News.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.NewsController.GetNews(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method fetches the news based on the noImagePath.
+            </summary>
+            <param name="request"></param>
+            <param name="noImagePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.NewsController.GetNewsFromDB(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Gets news events from the database.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.NewsController.GetNewsEventByID(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.NewsController.AddNewsEvents(HCL.Academy.Model.NewsRequest)">
+            <summary>
+            Add News to the database.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.NewsController.DeleteNews(HCL.Academy.Model.NewsRequest)">
+            <summary>
+            Delete News event.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.NewsController.UpdateNewsEvent(HCL.Academy.Model.NewsRequest)">
+            <summary>
+            Update a news event in the database.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.OnboardingController">
+            <summary>
+            This service contains methods related to onboarding
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.OnBoardUser(HCL.Academy.Model.UserOnboardingRequest)">
+            <summary>
+            This method is used for onboarding new user
+            </summary>
+            <param name="userInfo">new user information</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetOnBoardingChecklistReport(HCL.Academy.Model.OnboardingReportRequest)">
+            <summary>
+            This method provides checklist report
+            </summary>
+            <param name="req">request object specifying onboarding status and whether the data will be used for Excel download</param>        
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetLastChecklistReport(HCL.Academy.Model.OnboardingReportRequest)">
+            <summary>
+            This method provides last checklist item report
+            </summary>
+            <param name="req">request object specifying onboarding status and whether the data will be used for Excel download</param>        
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetOnboardingHelp(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides all the onboarding help text
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetBoardingData(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides details of skill and role based training assigned to the user
+            </summary>
+            <param name="req">service client's information</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetAllOnBoardedUser(HCL.Academy.Model.SkillwiseUsersRequest)">
+            <summary>
+            Get list of users who have been assigned a specific skill as primary skill
+            </summary>        
+            <param name="req">skill Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetOnBoardingDetailsReport(HCL.Academy.Model.OnboardingReportRequest)">
+            <summary>
+            This method provides details of all onboarded users including their skill,training,assessment and role details
+            </summary>
+            <param name="req">request object specifying onboarding status and whether the data will be used for Excel download</param>        
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetOnBoardingSkillReport(HCL.Academy.Model.OnboardingReportRequest)">
+            <summary>
+            This method provides details of all onboarded users including their skill,training,assessment and role details
+            </summary>
+            <param name="req">request object specifying onboarding status and whether the data will be used for Excel download</param>        
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.UpdateOnBoardingStatus(HCL.Academy.Model.TrainingStatusRequest)">
+            <summary>
+            This method updates the training completion status for more than one training for an employee
+            </summary>
+            <param name="trainingStatus"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetOnBoardingDetailsForUser(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides details of a user including his skills,trainings,assessments and project assignment
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.GetBoardingDataFromOnboarding(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides details of checklist,training,assessment details of a user
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.OnboardEmail(HCL.Academy.Model.OnboardEmailRequest)">
+            <summary>
+            This method sends onboarding email to onboarded user
+            </summary>
+            <param name="req">Request parameter containing user information like email etc.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.AddSkillEmail(HCL.Academy.Model.OnboardEmailRequest)">
+            <summary>
+            This method sends an email to when a skill is added
+            </summary>
+            <param name="req">Request parameter containing user information like email etc.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.StoreKalibreUserName(System.String,System.String,HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method stores Kalibre User Name
+            </summary>
+            <param name="emailid"></param>
+            <param name="kalibreUsrName"></param>
+            <param name="req"></param>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.OffBoardUser(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method stores Kalibre User Name
+            </summary>
+            <param name="emailid"></param>        
+            <param name="req"></param>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.OnboardingController.ChangeUserActivation(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method makes a user active or deactive
+            </summary>
+            <param name="userid"></param>        
+            <param name="req"></param>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.ProjectController">
+            <summary>
+            This service provides all the Project related functionality in HCL Academy
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetAllProjects(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the projects that exist in Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetAllProjectSkillResources(HCL.Academy.Model.RequestBase)">
+            <summary>
+             This method returns all the ProjectsSkillResource that exist in Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetAllProjectSkillResourcesByProjectID(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns all the ProjectsSkillResource for a ProjectId that exist in Academy database
+            </summary>
+            <param name="req"></param>
+            <param name="ProjectID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetAllProjectSkills(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the project and skill associations in HCL Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetExpectedProjectResourceCountByProjectId(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns Expected Project Resouce Count for a particular Project
+            </summary>
+            <param name="req"></param>
+            <param name="ProjectID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetHeatMapProjectDetailByProjectID(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns HeatMapProjectDetails for a project
+            </summary>
+            <param name="req"></param>
+            <param name="projectID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetProjectSkillsByProjectID(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method returns Project Skill association for a project
+            </summary>
+            <param name="req"></param>
+            <param name="projectID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.AddProject(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method adds a project to HCL Academy DB
+            </summary>
+            <param name="req"></param>
+            <param name="projectName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.AddProjectSkill(System.Int32,System.Int32,HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method saves Project and associated Skill
+            </summary>
+            <param name="req"></param>
+            <param name="ProjectID"></param>
+            <param name="SkillID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.DeleteProjectSkill(HCL.Academy.Model.RequestBase,System.Int32,System.String,System.String)">
+            <summary>
+            This method deletes relation between a project and skill
+            </summary>
+            <param name="req"></param>
+            <param name="projectskillid"></param>
+            <param name="projectid"></param>
+            <param name="skillid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.EditProjectByID(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method is used for editing a project in HCL Academy DB
+            </summary>
+            <param name="req"></param>
+            <param name="projectID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.AddProjectSkillResource(HCL.Academy.Model.ProjectSkillResourceRequest)">
+            <summary>
+            This method is used for saving overall resource count
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.AddProjectSkillResources(HCL.Academy.Model.ProjectResourcesRequest)">
+            <summary>
+            This method saves available resource count for various skills associated with a project
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.AddExpectedProjectResourceCountByProjectId(HCL.Academy.Model.ProjectResourcesRequest)">
+            <summary>
+            This method saves expected project resource count for a Project
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.RemoveProject(HCL.Academy.Model.UserProjectRequest)">
+            <summary>
+            This method removes a project from Project table in Academy
+            </summary>
+            <param name="userProjectInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.UpdateProject(HCL.Academy.Model.UserProjectRequest)">
+            <summary>
+            This method update a project in Project table in Academy
+            </summary>
+            <param name="userProjectInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetResourceDetailsByProjectID(HCL.Academy.Model.UserProjectRequest)">
+            <summary>
+            This method provides resource count for  project table in Academy
+            </summary>
+            <param name="userProjectInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.PostProjectSkill(HCL.Academy.Model.UserProjectRequest)">
+            <summary>
+            This method is used to map skill against a project in Academy
+            </summary>
+            <param name="userProjectInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.UpdateProjectData(HCL.Academy.Model.UserProjectRequest)">
+            <summary>
+            This method updates the project assigned to an onboarded user in Academy
+            </summary>
+            <param name="userProjectInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.AddProjectAdmin(HCL.Academy.Model.RequestBase,System.Int32,System.Int32)">
+            <summary>
+            This method adds project admin
+            </summary>
+            <param name="req">Request base</param>
+            <param name="userid">user id</param>
+            <param name="projectid">project id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.DeleteProjectAdmin(HCL.Academy.Model.RequestBase,System.Int32,System.Int32)">
+            <summary>
+            This method removes the project admin
+            </summary>
+            <param name="req">Request base</param>
+            <param name="projectid">project id</param>
+            <param name="userid">user id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetProjectAdmin(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method provides project admin for the project
+            </summary>
+            <param name="req">request base</param>
+            <param name="projectid">project id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetProjectByParent(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Get child projects for parent project
+            </summary>
+            <param name="req">request base</param>
+            <param name="projectid">parent project id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.AddProjectDetails(HCL.Academy.Model.RequestBase,System.String,System.Int32,System.Int32)">
+            <summary>
+            This method adds project details
+            </summary>
+            <param name="req"></param>
+            <param name="name"></param>
+            <param name="parentprojectid"></param>
+            <param name="projectlevel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetProjectAdminInfo(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method return project admin info of the user
+            </summary>
+            <param name="req">request base</param>
+            <param name="userid">user id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ProjectController.GetAllProjectAdminInfo(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the project admins
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.RSSController">
+            <summary>
+            This service exposes all the methods related to RSS
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.RSSController.GetRSSFeeds(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the RSS Feeds.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.RSSController.GetAllRSSFeeds(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Fetches all RSS Feeds from DB.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.RSSController.AddRssFeeds(HCL.Academy.Model.RssFeedRequest)">
+            <summary>
+            Adds a new RssFeed
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.RSSController.GetRssFeedById(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Get details of the selected ID.
+            </summary>
+            <param name="request"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.RSSController.UpdateRssFeeds(HCL.Academy.Model.RssFeedRequest)">
+            <summary>
+            This function will update the selected RssFeed
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.RSSController.DeleteRssFeed(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method deletes an Rss Feed.
+            </summary>
+            <param name="request"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.SkillCompetencyLevelController">
+            <summary>
+            This service exposes all the methods related to Skill Competency Levels. 
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillCompetencyLevelController.GetSkillCompetencyLevels(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method gets all the Skill Competency Levels
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillCompetencyLevelController.AddSkillCompetencyLevel(HCL.Academy.Model.SkillCompetencyLevelRequest)">
+            <summary>
+            This method adds a skill competency level.
+            </summary>
+            <param name="skillCompetencyLevel"></param>
+            <returns></returns>  
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillCompetencyLevelController.UpdateSkillCompetencyLevel(HCL.Academy.Model.SkillCompetencyLevelRequest)">
+            <summary>
+            Updates the desired skill competency level.
+            </summary>
+            <param name="skillCompetencyLevel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillCompetencyLevelController.RemoveSkillCompetencyLevel(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method removes the selected skill competency level 
+            </summary>
+            <param name="req"></param>
+            <param name="itemId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.SkillController">
+            <summary>
+            This service provides all the skill related functionality in HCL Academy
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetAllSkills(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides all the skills that exist in the Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetSkillForOnboardedUser(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method provides skills assigned to a onboarded user
+            </summary>
+            <param name="req">Client info</param>
+            <param name="userId">User id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetUserSkillByEmail(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method provides skills assigned to a onboarded user
+            </summary>
+            <param name="req">Client info</param>
+            <param name="emailAddress">emailAddress</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetSkillForUser(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides skills assigned to a onboarded user
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetUserSkillsOfCurrentUser(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides skills assigned to a onboarded user
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.AddSkill(HCL.Academy.Model.SkillAssignmentRequest)">
+            <summary>
+            This method assigns a skill to a user along with corresponding trainings and assessments
+            </summary>
+            <param name="userSkill"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.RemoveUserSkill(HCL.Academy.Model.SkillAssignmentRequest)">
+            <summary>
+            This method removes a skill assigned to the user along with corresponding training and assessment
+            </summary>
+            <param name="userSkill"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.UpdateUserSkill(HCL.Academy.Model.SkillAssignmentRequest)">
+            <summary>
+            This method is used to update user skill details like competency,last date of completion
+            </summary>
+            <param name="userSkill"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetAllSkillMaster(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Returns all skills
+            </summary>
+            <param name="req">Client Info</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetSkillById(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns skill by id
+            </summary>
+            <param name="req">client info</param>
+            <param name="id">skill id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.UpdateSkill(HCL.Academy.Model.SkillRequest)">
+            <summary>
+            This method updates skill details
+            </summary>
+            <param name="req">skill and client details</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.AddSkillDetail(HCL.Academy.Model.SkillRequest)">
+            <summary>
+            Adds skill master data
+            </summary>
+            <param name="req">client info and skill details</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.RemoveSkill(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Remove skill master data
+            </summary>
+            <param name="req">client info</param>
+            <param name="id">skill id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetSkills(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Get skills
+            </summary>
+            <param name="req">client info</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.SkillController.GetAllSkillResourceCount(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            Get skills
+            </summary>
+            <param name="req">client info</param>
+            /// <param name="projectId">projectId</param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.TokenController">
+            <summary>
+            This controller generates JWT token
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TokenController.Get(System.String)">
+            <summary>
+            Get
+            </summary>
+            <param name="emailid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.TrainingController">
+            <summary>
+            This service provides all the training related functionality in HCL Academy
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetUserTrainingReport(HCL.Academy.Model.RequestBase,System.String,System.String)">
+            <summary>
+            This method provides all the assigned trainings for all users
+            </summary>
+            <param name="request"></param>
+            <param name="projectid"></param>
+            <param name="roleid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetUserRoleBaseTrainingReport(HCL.Academy.Model.RequestBase,System.String,System.String)">
+            <summary>
+            This method provides all the assigned trainings for all users based on user role
+            </summary>
+            <param name="request"></param>
+            <param name="projectid"></param>
+            <param name="roleid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainings(HCL.Academy.Model.UserTrainingsRequest)">
+            <summary>
+            This method provides all the trainings for a particular skill and competency level combination in Academy
+            </summary>
+            <param name="trainingPreReq"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainingItems(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides all the trainings and their details assigned to the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainingAssigments(HCL.Academy.Model.RequestBase,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            This method provides all the trainings and their details assigned to the current user in Academy
+            </summary>
+            <param name="req"></param>
+            /// <param name="skillId"></param>
+            <param name="trainingId"></param>
+             /// <param name="projectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainingForUser(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method provides all the trainings and their details assigned to the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetAllUserTrainings(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method all trainings of an user
+            </summary>
+            <param name="req"></param>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainingBySkill(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method provides all the trainings and their details assigned to the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <param name="skillId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetUserTrainingsByTrainingID(HCL.Academy.Model.RequestBase,System.Int32,System.Int32)">
+            <summary>
+            This method provides all the trainings and their details assigned to current user in Academy
+            </summary>
+            <param name="req"></param>
+            <param name="trainingId"></param>
+            <param name="projectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainingsReport(HCL.Academy.Model.UserTrainingsRequest)">
+            <summary>
+            This method provides trainings list and users list in Academy
+            </summary>
+            <param name="preRquisiteInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetUserTrainingsDetails(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides list of all trainings for the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainingJourneyDetails(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method provides list of all skill and all associated trainings with it  for the current user in Academy
+            </summary>
+            <param name="req">Client information</param>
+            <param name="userId">User id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.AssignTrainingsToUser(HCL.Academy.Model.AssignTrainingRequest)">
+            <summary>
+            This method assigns training to the user
+            </summary>
+            <param name="req">Request parameter with training ,user id and client information</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetAllRoleTrainings(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides list of all trainings based on role for the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetMasterTrainings(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides list of all trainings for the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetSkillTrainings(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method provides list of all trainings based on skills for the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.AddSkillTraining(HCL.Academy.Model.SkillTrainingRequest)">
+            <summary>
+            This method check for training of the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetTrainingsByID(HCL.Academy.Model.SkillTrainingRequest)">
+            <summary>
+            This method provides training by ID of the current user in Academy
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.DeleteSkillTraining(HCL.Academy.Model.DeleteSkillTrainingRequest)">
+            <summary>
+            This method deletes skillcompentencytrainings of the current user in Academy
+            </summary>
+            <param name="deleteSkillTrainingRequest"></param>
+            <param name="check"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.UpdateSkillTraining(HCL.Academy.Model.SkillTrainingRequest)">
+            <summary>
+            This method updates training details
+            </summary>
+            <param name="req">training update request</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetAllTrainings(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all Trainings from Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetSkillBasedTrainingsUserView(HCL.Academy.Model.UserTrainingDetail)">
+            <summary>
+            This method returns all Trainings from Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetRoleBasedTrainingsUserView(HCL.Academy.Model.UserTrainingDetail)">
+            <summary>
+            This method returns all Trainings from Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.TrainingCompletionRequest(HCL.Academy.Model.UserTrainingDetail)">
+            <summary>
+            This method updates training details
+            </summary>
+            <param name="req">training update request</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetRoleBasedTrainingsAdminView(HCL.Academy.Model.UserTrainingDetail)">
+            <summary>
+            This method returns all Trainings from Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.GetSkillBasedTrainingsAdminView(HCL.Academy.Model.UserTrainingDetail)">
+            <summary>
+            This method returns all Trainings from Academy database
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.TrainingCompletionApproval(HCL.Academy.Model.UserTrainingDetail)">
+            <summary>
+            This method updates training details
+            </summary>
+            <param name="req">training update request</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingController.ChangeStatusofAllTrainings(HCL.Academy.Model.TrainingCompletionRequest)">
+            <summary>
+            Approve/Reject all trainings at once
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.TrainingMasterController">
+            <summary>
+            This service handles all requests related to the Master Trainings.
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingMasterController.GetAllMasterTrainings(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method gets all the master trainings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingMasterController.AddTraining(HCL.Academy.Model.TrainingMasterRequest)">
+            <summary>
+            This method adds a training
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingMasterController.GetMasterTrainingById(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method fetches the details of the selected training.
+            </summary>
+            <param name="req"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingMasterController.UpdateTraining(HCL.Academy.Model.TrainingMasterRequest)">
+            <summary>
+            This method updates the selected training.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingMasterController.DeleteTraining(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            this method deletes the selected training.
+            </summary>
+            <param name="request"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.TrainingMasterController.GetTrainingContent(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method fetches the training content from the database.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.ExternalUserController">
+            <summary>
+            This service exposes methods related to user
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.GetAllOrganizations(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the Organizations
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.GetAllUserGroups(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the User Groups
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.GetAllExternalUsers(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the External Users
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.GetExternalUserById(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns list of roles assigned to a user
+            </summary>
+            <param name="req">client info</param>
+            <param name="UserId">user id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.UpdateExternalUserPasswordStatus(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns list of roles assigned to a user
+            </summary>
+            <param name="req">Request base</param>            
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.SaveExternalUser(HCL.Academy.Model.ExternalUserRequest)">
+            <summary>
+            This method returns list of roles assigned to a user
+            </summary>
+            <param name="req">ExternalUser info</param>    
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.SendExternalUserPassword(HCL.Academy.Model.ExternalUserRequest)">
+            <summary>
+            This method sends password to external user
+            </summary>
+            <param name="req">ExternalUser info</param>    
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.GetExternalUserByUserName(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method returns list of roles assigned to a user
+            </summary>
+            <param name="req">client info</param>
+            <param name="UserName">UserName</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.AuthenticateExternalUser(HCL.Academy.Model.RequestBase,System.String,System.String)">
+            <summary>
+            This method returns list of roles assigned to a user
+            </summary>
+            <param name="req">client info</param>
+            <param name="UserName">UserName</param>
+            <param name="Password">Password</param>
+            <returns>blank if login is successful; otherwise it returns error message</returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.ResetExternalUserPassword(HCL.Academy.Model.ExternalUserRequest)">
+            <summary>
+            Request object
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.DeleteExternalUser(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Deletes external user
+            </summary>
+            <param name="req">Request base</param>
+            <param name="id">id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.ExternalUserController.GetUserMemberShip(HCL.Academy.Model.ExternalUserRequest)">
+            <summary>
+            Get UserMemberShip
+            </summary>
+            <param name="req">ExternalUserRequest</param>        
+            <returns></returns>
+        </member>
+        <member name="T:HCL.Academy.Service.Controllers.UserController">
+            <summary>
+            This service exposes methods related to user
+            </summary>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetAllRoles(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the roles
+            </summary>
+            <param name="req">Service client information</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetUserRole(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns all the roles
+            </summary>
+            <param name="req">Service client information</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetUsers(HCL.Academy.Model.RequestBase)">
+            <summary>
+            This method returns list of users
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetRoleForOnboardedUser(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            This method returns list of roles assigned to a user
+            </summary>
+            <param name="req">client info</param>
+            <param name="userId">user id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetUserActiveStatus(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            This method returns list of roles assigned to a user
+            </summary>
+            <param name="req">client info</param>
+            <param name="emailAddress">email Address</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.AddRole(HCL.Academy.Model.RoleAssignmentRequest)">
+            <summary>
+            This method assigns role to a user
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.RemoveUserRole(HCL.Academy.Model.RequestBase,System.Int32,System.String)">
+            <summary>
+            /// This method removes role assigned to user
+            </summary>
+            <param name="req">client info</param>
+            <param name="roleId">role id</param>
+            <param name="userId">user id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.AddRoleSkill(HCL.Academy.Model.RequestBase,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            /// This method adds skill for a role
+            </summary>
+            <param name="req">client info</param>
+            <param name="roleId">role id</param>
+            <param name="skillId">skill id</param>
+            <param name="competencylevelId">competencylevel Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetRoleSkill(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            /// This method gets skills for a role
+            </summary>
+            <param name="req">client info</param>
+            <param name="roleId">role id</param>    
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.DeleteRoleSkill(HCL.Academy.Model.RequestBase,System.Int32,System.Int32)">
+            <summary>
+            /// This method deletes skill for a role
+            </summary>
+            <param name="req">client info</param>
+            <param name="roleId">role id</param>
+            <param name="skillId">skill id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetUserId(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            Get user id by email address
+            </summary>
+            <param name="req">Client information</param>
+            <param name="emailId">Email address</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetRoles(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Get all roles
+            </summary>
+            <param name="req">client info</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetRolesWithSkills(HCL.Academy.Model.RequestBase)">
+            <summary>
+            Gets a list of roles with skills assigned to them.
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.GetSkillGapReports(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Gets the Skill Gap Report.
+            </summary>
+            <param name="req"></param>
+            <param name="roleID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.UpdateRoleTraining(HCL.Academy.Model.RoleTrainingRequest)">
+            <summary>
+            Thisd method updates roletraining
+            </summary>
+            <param name="req">client infrormation</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.AddRoleTraining(HCL.Academy.Model.RoleTrainingRequest)">
+            <summary>
+            Add role training
+            </summary>
+            <param name="req">client info</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.RemoveRoleTraining(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Remove role training
+            </summary>
+            <param name="req">client info</param>
+            <param name="id">training id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.UpdateRole(HCL.Academy.Model.RequestBase,System.Int32,System.String)">
+            <summary>
+            Update role information
+            </summary>
+            <param name="req">Client information</param>
+            <param name="roleId">Role id</param>
+            <param name="roleName">role name</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.RemoveRole(HCL.Academy.Model.RequestBase,System.Int32)">
+            <summary>
+            Remove role
+            </summary>
+            <param name="req">client information</param>
+            <param name="roleId">role id</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCL.Academy.Service.Controllers.UserController.AddRoleDetail(HCL.Academy.Model.RequestBase,System.String)">
+            <summary>
+            Add role detail
+            </summary>
+            <param name="req">client info</param>
+            <param name="roleName">role name</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

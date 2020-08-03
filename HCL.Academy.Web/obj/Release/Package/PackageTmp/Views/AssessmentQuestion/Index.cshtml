@@ -1,0 +1,118 @@
+﻿@model IEnumerable<HCL.Academy.Model.AssessmentQuestion>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+ }
+<div id="body">
+    @if (TempData["CreateSuccess"] != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Record created successfully!');
+
+            });
+
+        </script>
+    }
+    else if (TempData["DeleteMessage"] != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Record deleted successfully!');
+
+            });
+
+        </script>
+    }
+        <section class="content-wrapper main-content clear-fix container">
+            <div class="row"><div class="col-md-12"><h2>Maintenance Of Assessment Questions</h2></div></div>
+            <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "AssessmentQuestion")' class="btn btn-primary" role="button">Add Assessment Question</a></div></div>            
+            <table class="table table-bordered table-striped">
+                <thead style="background-color:#326295;color:#fff">
+                    <tr>
+                        @*<th>
+                        @Html.DisplayNameFor(model => model.SelectedAssessmentId)
+                    </th>*@
+                        <th>
+                            @Html.DisplayNameFor(model => model.Question)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Marks)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SelectedAssessment)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Option1)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Option2)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Option3)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Option4)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Option5)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CorrectOption)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CorrectOptionSequence)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.SelectedAssessmentId)
+                    </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Question)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Marks)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SelectedAssessment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Option1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Option2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Option3)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Option4)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Option5)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CorrectOption)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CorrectOptionSequence)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", "AssessmentQuestion", new { id = item.ID }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </section>
+</div>

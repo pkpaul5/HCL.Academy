@@ -1,0 +1,65 @@
+﻿@model IEnumerable<HCL.Academy.Model.AcademyEvent>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row"><div class="col-md-12"><h2>Maintenance Of AcademyEvents</h2></div></div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "AcademyEvents")' class="btn btn-primary" role="button">Add Event</a></div></div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered admin-onbrdtble">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.title)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.location)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.eventDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.endDate)
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.location)
+                            </td>
+                            <td>
+                                 @item.eventDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @item.endDate.ToString("dd/MM/yyyy")                                
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id   = item.id }) |
+                                @*@Html.ActionLink("Details", "Details", new { id = item.ID }) |*@
+                                @Html.ActionLink("Delete", "Delete", "AcademyEvents", new { id = item.id }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                            </td>
+                        </tr>
+                }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,89 @@
+﻿@model HCL.Academy.Model.AccountSkillHeatMapViewModel
+@using HCL.Academy.Model;
+@using HCLAcademy.Util
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Index", "AccountLevelSkillMap", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div id="body">
+
+        <section class="content-wrapper main-content clear-fix container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Account level Skill HeatMap:</h2>
+                </div>
+            </div>
+            @*<br /><input type="button" name="download" id="btnDownload" class="sta-adminbt" onclick="Download()" value="Download To Excel" />*@
+            <div class="row">
+                <div class="col-md-2">Select Project</div>
+                <div class="col-md-2 text-left">
+                    <select id="project" class="form-control" name="project">
+                        <option value="0">All Projects</option>
+                        @foreach (Project proj in ViewBag.Projects)
+                        {
+                            <option value=@proj.id>@proj.projectName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <div class="btn-group" role="group" aria-label="Basic example">                          
+                        <button type="button" onclick="javascript:GetReportData(); return false;" class="sta-adminbt">Get Report</button>
+                        <button type="button" onclick="javascript:Download(); return false;" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                    </div>
+                </div>
+            </div>
+            <div id="dvReport" class="row"></div>
+           @*@Html.HiddenFor(m=>m.competencyLevel,new { id="competencylevelid",name= "cmpid" })*@
+        </section>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //GetReportData();
+
+        });
+        function GetReportData() {
+            var selectedproject = $("#project").val();
+           // var selectedcompetencylevelid = $("#cmpid").val();
+         //   var selectedcompetency = $("#competency").val();
+            var postData = { projectid: selectedproject};
+            $.ajax({
+                type: "POST",
+                url: "/AccountLevelSkillMap/GetReport",
+                contentType: "application/json",
+                dataType: "",
+                data: JSON.stringify(postData),
+                success: function (response) {
+                    $("#dvReport").html(response);
+                },
+                failure: function (response) {
+                    alert(response.d);
+                }
+            });
+
+        }
+     function Download()
+    {
+         var selectedproject = $("#project").val();
+         var url = '@Url.Action("DownloadReportToExcel", "AccountLevelSkillMap")?projectid=' + selectedproject;
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+    }
+
+    </script>
+
+
+
+}

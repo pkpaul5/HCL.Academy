@@ -1,0 +1,75 @@
+﻿@using HCL.Academy.Model;
+@model IEnumerable<HCL.Academy.Model.UserTraining>
+<table class="table table-bordered admin-onbrdtble">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectName)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.SkillName)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsTrainingCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastDayCompletion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompletedDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectName)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.SkillName)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrainingName)
+                </td>
+                <td>
+                    @Html.ValueFor(modelItem => item.AdminApprovalStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastDayCompletion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompletedDate)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,41 @@
+﻿@model  IEnumerable<HCL.Academy.Model.Project>
+@using HCL.Academy.Model;
+<table class="table table-bordered admin-onbrdtble">
+    <thead>
+        <tr>
+            <th>
+                @Html.Label("Project Name")
+            </th>
+            <th>Actions</th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+            <th style="border:none"></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.projectName)
+        </td>
+
+        <td>@Html.ActionLink("Edit", "EditProjects", "SecondLevelProject", new { projectID = item.id }, null)</td>
+        <td>@Html.ActionLink("Delete", "DeleteProject", "SecondLevelProject", new { projectID = item.id }, new { onclick = "return confirm('Are you sure you wish to delete?This will delete child projects and admin information also.');" }) </td>
+        <td>@Html.ActionLink("Manage Skill", "Manage", "ProjectSkills", new { projectid = item.id }, null)</td>
+        <td>@Html.ActionLink("Expected Competency", "Create", "ProjectExpectedResource", new { projectID = item.id }, null)</td>
+        <td>@Html.ActionLink("Available Competency", "Create", "ProjectAvailableResource", new { projectID = item.id, projectName = item.projectName }, null)</td>
+        <td>@Html.ActionLink("Overall Competency", "ResourceDetails", "ProjectResource", new { projectID = item.id }, null)</td>
+        <td>@Html.ActionLink("Skill HeatMap", "Details", "SkillHeatMap", new { projectID = item.id }, null)</td>
+        <td>@Html.ActionLink("Manage Child Projects", "ManageChildProject", "SecondLevelProject", new { parentProjectId = item.id }, null)</td>
+        <td>@Html.ActionLink("Manage Project Admin", "ProjectAdmin", "SecondLevelProject", new { parentProjectId = item.id }, null)</td>
+        <td>@Html.ActionLink("Assign Project", "Index", "Assignment", new { id = item.id }, null)</td>
+    </tr>
+    }
+
+</table>

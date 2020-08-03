@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DBConnectionString-Web.config Connection String" description="DBConnectionString Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:statestreet.database.windows.net,1433;Initial Catalog=StateStreetAcademy;Persist Security Info=False;User ID=street3009;Password=state@3009;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Academy\\EPS\\Academy\\Code\\HCL\.Academy\.DB\\HCL\.Academy\.Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DBConnectionString']/@connectionString" />
+  </parameter>
+  <parameter name="AuthenticateContext-Web.config Connection String" description="AuthenticateContext Connection String used in web.config by the application to access the database." defaultValue="Data Source=(localdb)\v11.0; Initial Catalog=AuthenticateContext-20161226110643; Integrated Security=True; MultipleActiveResultSets=True; AttachDbFilename=|DataDirectory|AuthenticateContext-20161226110643.mdf" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Academy\\EPS\\Academy\\Code\\HCL\.Academy\.DB\\HCL\.Academy\.Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='AuthenticateContext']/@connectionString" />
+  </parameter>
+  <parameter name="AcademyDBContext-Web.config Connection String" description="AcademyDBContext Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/DAL.EF.AcademyEntities.csdl|res://*/DAL.EF.AcademyEntities.ssdl|res://*/DAL.EF.AcademyEntities.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=DESKTOP-T6EVRI8;initial catalog=Academy;user id=sa;password=sa;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Academy\\EPS\\Academy\\Code\\HCL\.Academy\.DB\\HCL\.Academy\.Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='AcademyDBContext']/@connectionString" />
+  </parameter>
+</parameters>

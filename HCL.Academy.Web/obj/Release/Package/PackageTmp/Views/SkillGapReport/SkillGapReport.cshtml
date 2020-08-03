@@ -1,0 +1,54 @@
+﻿@model IEnumerable<HCL.Academy.Model.SkillGapReport>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered admin-onbrdtble">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmailID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Skill)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExpectedCompetencyLevel)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ActualCompetencyLevel)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.EmployeeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.EmployeeID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.EmailID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Skill)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ExpectedCompetencyLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ActualCompetencyLevel)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

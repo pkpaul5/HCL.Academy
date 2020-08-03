@@ -1,0 +1,643 @@
+﻿@model IEnumerable<HCL.Academy.Model.SkillCompetencyLevel>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="row"><div class="col-md-12"><h2>Maintenance Of SkillCompetencyLevel</h2></div></div>
+        <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "SkillCompetencyLevel")' class="btn btn-primary" role="button">Add SkillCompetencyLevel</a></div></div>
+        <table class="table table-bordered admin-onbrdtble" id="tblSkillCompetencyLevels">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Competence</th>
+                    <th>Description</th>
+                    <th>Professional Skills</th>
+                    <th>Soft Skills</th>
+                    <th>Competency Level Order</th>
+                    <th>Training Completion Points</th>
+                    <th>Assessment Completion Points</th>
+                    <th colspan="2" style="text-align: center">Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var level in Model)
+                    {
+                        <tr>
+                            <td>@level.SkillName</td>
+                            <td>@level.CompetencyName</td>
+                            <td>@level.Description</td>
+                            <td>@level.ProfessionalSkills</td>
+                            <td>@level.SoftSkills</td>
+                            <td>@level.CompetencyLevelOrder</td>
+                            <td>@level.TrainingCompletionPoints</td>
+                            <td>@level.AssessmentCompletionPoints</td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = level.ItemID }) |
+                            <a href="#" onclick="RemoveLevel(@level.ItemID)">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="10" style="text-align: center">No data to display.</td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+        <div style="display:none" class="hiddenItems">
+            <input type="hidden" id="itemIdToDelete" />
+        </div>
+    </section>
+        <div class="container">
+            <div class="modal fade" id="popup-new-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" style="font-size: 30px !important;margin-right: 0px !important;margin-top: 0px !important;">&times;</button>
+                            <h4 style="font-size: 18px;margin: 0;line-height: 1.42857143;">Add</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Skill : </h4></div>
+                                <div class="col-md-7">
+                                    <select id="ddSkills" class="form-control">
+                                        <option value="0">Please select a skill.</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Competency Level : </h4></div>
+                                <div class="col-md-7">
+                                    <select id="ddCompetencyLevels" class="form-control">
+                                        <option value="0">Please select a level.</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Description : </h4></div>
+                                <div class="col-md-7">
+                                    <textarea class="form-control" rows="5" id="txtDescription"></textarea>
+                                </div>
+                            </div>
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Professional Skill : </h4></div>
+                                <div class="col-md-7"></div>
+                            </div>
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Soft Skill : </h4></div>
+                                <div class="col-md-7"><input type="text" class="editedRole form-control" id="inputSoftSkill" /></div>
+                            </div>
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Competency Level Order : </h4></div>
+                                <div class="col-md-7"><input type="text" class="editedRole form-control" id="inputLevelOrder" /></div>
+                            </div>
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Training Completion points : </h4></div>
+                                <div class="col-md-7"><input type="text" class="editedRole form-control" id="inputTrainingPoints" /></div>
+                            </div>
+                            <div class="row newFormAddLevel">
+                                <div class="col-md-4" style="text-align:right;padding:5px;font-size:14px;"><h4>Assessment Completion points :</h4></div>
+                                <div class="col-md-7"><input type="text" class="editedRole form-control" id="inputAssessmentPoints" /></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" style="float:right" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-default" style="float:right;margin-right:10px" onclick="AddNewSkillCompLevel()">Save</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>           
+        </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        getAllCompetencies();
+    });
+    function insertNewRole() {
+        // validate
+        var duplicateExist;
+        var role = $('#roleName').val();
+        var roletitle = role.trim();
+        if (roletitle.length == 0) {
+            alert("Role name can't be left blank.");
+            return;
+        }
+
+        var PostData = {
+            rolename: roletitle,
+
+        };
+
+        // get all roles to check data duplicacy
+        $.ajax({
+            type: "POST",
+            url: "/ManageRoles/GetRoles",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result != null) {
+
+                    for (i = 0; i < result.length; i++) {
+                        console.log(result[i]["Id"]);
+                        console.log(result[i]["Title"]);
+                        if (result[i]["Title"].toLowerCase() == roletitle.toLowerCase()) {
+                            duplicateExist = true;
+                            break;
+                        }
+                    }
+                    if (duplicateExist) {
+                        alert("Role already present.");
+                    }
+                    else {
+                        addNewRole(roletitle);
+                    }
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+        // send data to controller method
+    }
+
+    function addNewRole(newRole) {
+
+        var PostData = {
+            rolename: newRole,
+
+        };
+        $.ajax({
+            type: "POST",
+            url: "/ManageRoles/PostRole",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/ManageRoles/GetRoles",
+                        contentType: "application/json;",
+                        dataType: "",
+                        data: JSON.stringify(PostData),
+                        success: function (result) {
+                            console.log(result);
+                            var tblHTML = "";
+                            if (result.length > 0) {
+                                for (i = 0; i < result.length; i++) {
+                                    console.log(result[i]["Id"]);
+                                    console.log(result[i]["Title"]);
+                                    tblHTML += "<tr>" +
+                                                    "<td>" + result[i]["Title"] + "</td>" +
+                                                    "<td><a href='#' onclick='OpenEditForm(" + '\"' + result[i]["Id"] + '\",\"'+result[i]["Title"] + '\"'+ ")'>Edit</a></td>" +
+                                                    "<td><a href='#' onclick='RemoveRole(" + result[i]["Id"] + ")'>Delete</a></td>" +
+                                                "</tr>";
+                                }
+
+
+                            }
+                            else {
+                                tblHTML += "<tr><td colspan='3' style='text-align:center'>No data to display</td></tr>";
+                            }
+                            $('#tblViewAllRoles tbody').html("");
+                            console.log(tblHTML);
+                            $('#tblViewAllRoles tbody').html(tblHTML);
+                            $('#popup-delete-confirm').modal('hide');
+
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function RemoveLevel(itemId){
+        $('#itemIdToDelete').val(itemId);
+        var res = confirm("Do you really want to delete the record  ?");
+        var ststus = (res == true) ?DeleteSkillCompLevel() : "" ; 
+        
+    }
+
+    function DeleteSkillCompLevel() {
+
+        var itemtodelete = $('#itemIdToDelete').val()
+        var PostData = {
+            itemId: itemtodelete,
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/SkillCompetencyLevel/RemoveSkillCompetencyLevel",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                if(result == true){                 
+                    alert("Record deleted successfully");
+                    location.reload();
+                }
+                else {
+                    alert("This record can't be deleted as it is refered in other table");
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function OpenEditForm(roleId, roleTitle) {
+        $('#roleIdToEdit').val(roleId);
+        $('.editedRole').val(roleTitle);
+        $('#popup-edit-form').modal('show');
+    }
+
+    function EditRole() {
+        var roleId = $('#roleIdToEdit').val();
+        var roleName = $('.editedRole').val();
+
+        var PostData = {
+            roleId : roleId,
+            roleName: roleName
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/ManageRoles/UpdateRole",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+
+                //window.location.reload();
+                //RedirectToAction("roles", "manageRoles");
+                if (result) {
+                    // get all roles to check data duplicacy
+                    $.ajax({
+                        type: "POST",
+                        url: "/ManageRoles/GetRoles",
+                        contentType: "application/json;",
+                        dataType: "",
+                        data: JSON.stringify(PostData),
+                        success: function (result) {
+                            console.log(result);
+                            var tblHTML = "";
+                            if (result.length > 0) {
+                                for (i = 0; i < result.length; i++) {
+                                    console.log(result[i]["Id"]);
+                                    console.log(result[i]["Title"]);
+                                    tblHTML += "<tr>" +
+                                                    "<td>" + result[i]["Title"] + "</td>" +
+                                                    "<td><a href='#' onclick='OpenEditForm(" + '\"' + result[i]["Id"] + '\",\"' + result[i]["Title"] + '\"' + ")'>Edit</a></td>" +
+                                                    "<td><a href='#' onclick='RemoveRole(" + result[i]["Id"] + ")'>Delete</a></td>" +
+                                                "</tr>";
+                                }
+
+
+                            }
+                            else {
+                                tblHTML += "<tr><td colspan='3' style='text-align:center'>No data to display</td></tr>";
+                            }
+                            $('#tblViewAllRoles tbody').html("");
+                            console.log(tblHTML);
+                            $('#tblViewAllRoles tbody').html(tblHTML);
+                            $('#popup-edit-form').modal('hide');
+
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function showAddItemForm() {
+        $('#popup-new-form').modal('show');
+
+    }
+
+    function getAllCompetencies(){
+        $.ajax({
+            type: "POST",
+            url: "/SkillCompetencyLevel/GetCompetencies",
+            contentType: "application/json;",
+            dataType: "",
+            //data: JSON.stringify(PostData),
+            success: function (result) {
+                if (result != null) {
+                    var competencyHTML = "";
+                    for (i = 0; i < result.length; i++) {
+                        console.log(result[i]["CompetenceId"]);
+                        console.log(result[i]["CompetenceName"]);
+                        competencyHTML += "<option value='" + result[i]["CompetenceId"] + "'>" + result[i]["CompetenceName"] + "</option>";
+
+                    }
+                    $('#ddCompetencyLevels').append(competencyHTML);
+                    $('#ddEditCompetencyLevels').append(competencyHTML);
+                }
+                getAllSkills();
+            },
+            error: function (data) {
+                getAllSkills();
+                console.log(data);
+            }
+        });
+    }
+
+    function getAllSkills(){
+        $.ajax({
+            type: "POST",
+            url: "/SkillCompetencyLevel/GetSkills",
+            contentType: "application/json;",
+            dataType: "",
+            success: function (result) {
+                if(result != null){
+                    var skillsHTML = "";
+                    for (i = 0; i < result.length; i++) {
+                        console.log(result[i]["SkillId"]);
+                        console.log(result[i]["SkillName"]);
+                        skillsHTML += "<option value='" + result[i]["SkillId"] + "'>" + result[i]["SkillName"] + "</option>";
+
+                    }
+                    $('#ddSkills').append(skillsHTML);
+                    $('#ddEditSkills').append(skillsHTML);
+                }
+
+            },
+            error: function (data) {
+                console.log(data);
+
+            }
+        });
+    }
+
+    function AddNewSkillCompLevel() {
+        var isValidated = true;
+        var description = $('#txtDescription').val();
+        var professionalSkill = $('#inputProfSkill').val();
+        var softSkill = $('#inputSoftSkill').val();
+        var trainingCompletionPoints = $('#inputTrainingPoints').val();
+        var assessmentCompletionPoints = $('#inputAssessmentPoints').val();
+        var compOrder = $('#inputLevelOrder').val();
+        if ($("#ddSkills")[0].selectedIndex == 0) {
+            alert('Please select skill.');
+            isValidated = false;
+            return;
+        }
+        if ($("#ddCompetencyLevels")[0].selectedIndex == 0) {
+            alert('Please select competence.');
+            isValidated = false;
+            return;
+        }
+
+        if (description.trim() == "") {
+            alert('Description can\'t be blank.');
+            isValidated = false;
+            return;
+        }
+
+        if (professionalSkill.trim() == "") {
+            alert('Professional skill can\'t be blank.');
+            isValidated = false;
+            return;
+        }
+
+        if (softSkill.trim() == "") {
+            alert('Soft skill can\'t be blank.');
+            isValidated = false;
+            return;
+        }
+
+        if (compOrder.trim() == "") {
+            alert('Competency level order can\'t be blank.');
+            isValidated = false;
+            return;
+        }
+        else if (isNaN(compOrder)) {
+            alert('Competency level order is not a number');
+            isValidated = false;
+            return;
+        }
+        else if (compOrder <= 0) {
+            alert("Competency level order should be greater than 0.");
+            isValidated = false;
+            return;
+        }
+
+        if (trainingCompletionPoints.trim() == "") {
+            alert('Training completion points can\'t be blank.');
+            isValidated = false;
+            return;
+        }
+        else if (isNaN(trainingCompletionPoints.trim())) {
+            alert('Training completion points is not a number.');
+            isValidated = false;
+            return;
+        }
+        else if (trainingCompletionPoints.trim() < 0) {
+            alert("Training completion points should be greater than 0.");
+            isValidated = false;
+            return;
+        }
+
+        if (assessmentCompletionPoints.trim() == "") {
+            alert('Assessment completion points can\'t be blank.');
+            isValidated = false;
+            return;
+        }
+        else if (isNaN(assessmentCompletionPoints.trim())) {
+            alert('Assessment completion points is not a number.');
+            isValidated = false;
+            return;
+        }
+        else if (assessmentCompletionPoints.trim() < 0) {
+            alert("Assessment completion points should be greater than 0.");
+            isValidated = false;
+            return;
+        }
+
+        isValidated = true;
+
+        if (isValidated == true) {
+
+            var PostData = {
+                skill : $('#ddSkills').val(),
+                competence: $('#ddCompetencyLevels').val(),
+                description: description.trim(),
+                professionalskill : professionalSkill.trim(),
+                softskill: softSkill.trim(),
+                comporder: compOrder,
+                trainingcompletionpoints: trainingCompletionPoints.trim(),
+                assessmentcompletionpoints: assessmentCompletionPoints.trim()
+
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/SkillCompetencyLevel/PostSkillCompetencyLevel",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    if (result) {
+                        GetAllSkillCompetencyLevels();
+                        $('#popup-new-form').modal('toggle');
+                        alert("Item added successfully.");
+
+
+                    }
+                    else{
+                        alert("Entered skill and competency combination exists.");
+                        $('#popup-new-form').modal('toggle');
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+    }
+
+    function GetAllSkillCompetencyLevels(){
+        $.ajax({
+            type: "POST",
+            url: "/SkillCompetencyLevel/GetSkillCompetencyLevels",
+            contentType: "application/json;",
+            dataType: "",
+            //data: JSON.stringify(PostData),
+            success: function (result) {
+                var tblHTML = "";
+                if (result.length > 0) {
+                    for (i = 0; i < result.length; i++) {
+                        tblHTML += "<tr>" +
+                                        "<td>" + result[i]["SkillName"] + "</td>" +
+                                        "<td>" + result[i]["CompetencyName"] + "</td>" +
+                                        "<td>" + result[i]["Description"] + "</td>" +
+                                        "<td>" + result[i]["ProfessionalSkills"] + "</td>" +
+                                        "<td>" + result[i]["SoftSkills"] + "</td>" +
+                                        "<td>" + result[i]["CompetencyLevelOrder"] + "</td>" +
+                                        "<td>" + result[i]["TrainingCompletionPoints"] + "</td>" +
+                                        "<td>" + result[i]["AssessmentCompletionPoints"] + "</td>" +
+                                       
+                        "<td><a href='#' onclick='showEditItemForm(" + '\"' + result[i]["ItemID"] + '\",\"'
+                                                                        + result[i]["SkillID"] + '\",\"'
+                                                                        + result[i]["CompetencyID"] + '\",\"'
+                                                                        + result[i]["Description"] + '\",\"'
+                                                                        + result[i]["ProfessionalSkills"] + '\",\"'
+                                                                        + result[i]["SoftSkills"] + '\",\"'
+                                                                        + result[i]["CompetencyLevelOrder"] + '\",\"'
+                                                                        + result[i]["TrainingCompletionPoints"] + '\",\"'
+                                                                        + result[i]["AssessmentCompletionPoints"] +
+                                                                        '\"' + ")'>Edit</a></td>" +
+                                        "<td><a href='#' onclick='RemoveLevel(" + result[i]["ItemID"] + ")'>Delete</a></td>" +
+                                    "</tr>";
+                    }
+
+                }
+                else{
+                    tblHTML += "<tr><td colspan='10' style='text-align:center'>No data to display.</td></tr>"
+                }
+
+                $('#tblSkillCompetencyLevels tbody').html("");
+                $('#tblSkillCompetencyLevels tbody').html(tblHTML);
+
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function showEditItemForm(ItemID, SkillID, CompetencyID, Description, ProfessionalSkills, SoftSkills, CompetencyLevelOrder, TrainingCompletionPoint, AssessmentCompletionPoints) {
+        $('#itemIdToEdit').val(ItemID);
+        $('#ddEditSkills').val(SkillID);
+        $('#ddEditCompetencyLevels').val(CompetencyID);
+        $('#txtEditDescription').val(Description);
+        $('#inputEditProfSkill').val(ProfessionalSkills);
+        $('#inputEditSoftSkill').val(SoftSkills);
+        $('#inputEditLevelOrder').val(CompetencyLevelOrder);
+        $('#inputEditTrainingPoints').val(TrainingCompletionPoint);
+        $('#inputEdittAssessmentPoints').val(AssessmentCompletionPoints);
+
+        $('#popup-edit-form').modal('show');
+
+    }
+
+    function UpdateSkillCompLevel() {
+        var skillID = $('#ddEditSkills').val();
+        var competencyID = $('#ddEditCompetencyLevels').val();
+        var description = $('#txtEditDescription').val();
+        var professionalSkill = $('#inputEditProfSkill').val();
+        var softSkill = $('#inputEditSoftSkill').val();
+        var trainingCompletionPoints = $('#inputEditTrainingPoints').val();
+        var assessmentCompletionPoints = $('#inputEdittAssessmentPoints').val();
+        var compOrder = $('#inputEditLevelOrder').val();
+
+        var PostData = {
+            itemid :  $('#itemIdToEdit').val(),
+            skill: skillID,
+            competence: competencyID,
+            description: description.trim(),
+            professionalskill: professionalSkill.trim(),
+            softskill: softSkill.trim(),
+            comporder: compOrder,
+            trainingcompletionpoints: trainingCompletionPoints.trim(),
+            assessmentcompletionpoints: assessmentCompletionPoints.trim()
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/SkillCompetencyLevel/UpdateSkillCompetencyLevel",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                if (result) {
+                    GetAllSkillCompetencyLevels();
+                    $('#popup-edit-form').modal('toggle');
+                    alert("Item updated successfully.");
+
+
+                }
+                else {
+                    alert("Entered skill and competency combination exists.");
+                    $('#popup-edit-form').modal('toggle');
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+</script>

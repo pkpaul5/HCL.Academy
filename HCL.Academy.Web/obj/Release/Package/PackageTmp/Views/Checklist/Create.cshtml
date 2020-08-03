@@ -1,0 +1,99 @@
+﻿@model HCL.Academy.Model.Checklist
+
+@{
+    ViewBag.Title = "Create";
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <ul class="breadcrumb">
+            <li>@Html.ActionLink("Checklist Item List", "Index")</li>
+            <li class="active">Add Checklist item</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-12"><h2>Add Checklist item</h2></div>
+        </div>        
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class=" col-md-2">
+                        @Html.LabelFor(model => model.name, "Name", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class=" col-md-2">
+                        @Html.LabelFor(model => model.internalName, "Internal Name", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.internalName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.internalName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class=" col-md-2">
+                        @Html.LabelFor(model => model.desc, "Description", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.desc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.desc, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class=" col-md-2">
+                        @Html.LabelFor(model => model.choice, "Choice", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="checkbox" style="padding-left:20px">
+                            @Html.EditorFor(model => model.choice)
+                            @Html.ValidationMessageFor(model => model.choice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class=" col-md-2">
+                        @Html.LabelFor(model => model.selectedGEO, "GEO", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.selectedGEO, new SelectList(Model.GEOs, "Id", "Title"), "Select a GEO", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedGEO, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class=" col-md-2">
+                        @Html.LabelFor(model => model.selectedRole, "Role", htmlAttributes: new { @class = "control-label" })
+                        <span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.selectedRole, new SelectList(Model.roles, "Id", "Title"), "Select a Role", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedRole, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </section>
+</div>

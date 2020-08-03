@@ -1,0 +1,173 @@
+﻿@using HCL.Academy.Model;
+@model dynamic
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .pL0{
+        padding-left:0px !important;
+    }
+    .newFormAddLevel {
+        padding: 5px;
+    }
+
+    .mandatoryField {
+        color: red;
+    }
+
+    .errTraining, .errRole, .errMandatory {
+        margin-left: 16px;
+        color: red;
+        display: none;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#ddTraining').on('change', function () {
+            $('.errTraining').hide();
+        });
+        $('#ddRole').on('change', function () {
+            $('.errRole').hide();
+        });
+        $('#ddMandaotry').on('change', function () {
+            $('.errMandatory').hide();
+        });
+
+        $("#ddTraining").prepend("<option value='-1'>Please select training</option>");
+        $("#ddRole").prepend("<option value='-1'>Please select role</option>");
+
+    });
+    function clearData() {
+        $('#ddTraining').val("-1");
+        $('#ddRole').val("-1");
+        $('#ddMandaotry').val("-1");
+        $('.errTraining').hide();
+        $('.errRole').hide();
+        $('.errMandatory').hide();
+    }
+    function postRoleTraining() {
+        var isValidated = true;
+        var training = $('#ddTraining').val();
+        var role = $('#ddRole').val();
+        var isMandatory = $('#ddMandaotry').val();
+        if (training == "-1") {
+            $('.errTraining').show();
+            isValidated = false;
+        }
+        if (role == "-1") {
+            $('.errRole').show();
+            isValidated = false;
+        }
+        if (isMandatory == "-1") {
+            $('.errMandatory').show();
+            isValidated = false;
+        }
+
+        if(isValidated ==true){
+            var PostData = {
+                itemId: $('#itemIdToEdit').val(),
+                trainingId: training,
+                roleId: role,
+                isMandatory: isMandatory == 1 ? true : false
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/RoleTraining/UpdateRoleTraining",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    if (result) {
+                        alert("Record updated successfully");
+                    }
+                    else {
+                        alert("Entered training and role combination exists. Please try with another");
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }       
+    }
+</script>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li>@Html.ActionLink("RoleTraining List", "Index")</li>
+                <li class="active">Edit RoleTraining</li>
+            </ul>
+            <div class="row">
+                <div class="col-md-12"><h2>Edit RoleTraining</h2></div>
+            </div>            
+            <div class="row newFormAddLevel" style="display:none">
+                <input type="hidden" id="itemIdToEdit" value="@Model.RoleTraining.RoleTrainingId" />
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-2" style="padding:5px;font-size:14px;"><h4>Training <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-7 pL0">
+                    @Html.DropDownList("ddTrainings", new SelectList(Model.Trainings, "id", "trainingName", Model.RoleTraining.TrainingId),
+                        new
+                        {
+                            @id = "ddTraining",
+                            @class = "form-control"
+
+                        })
+                    <span class="errTraining">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-2" style="padding:5px;font-size:14px;"><h4>Role <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-7 pL0">
+
+                    @Html.DropDownList("ddRole", new SelectList(Model.Roles, "Id", "Title", Model.RoleTraining.RoleId),
+                        new
+                        {
+                            @id = "ddRole",
+                            @class = "form-control"
+
+                        })
+                    <span class="errRole">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-2" style="padding:5px;font-size:14px;"><h4>Is Mandatory <span class="mandatoryField">*</span></h4></div>
+                <div class="col-md-7 pL0">
+                    @if (Model.RoleTraining.IsMandatory)
+                    {
+                        <select class="form-control" id="ddMandaotry" name="ddMandaotry">
+                            <option value="-1">Please select option</option>
+                            <option value="1" selected>Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-control" id="ddMandaotry" name="ddMandaotry">
+                            <option value="-1">Please select option</option>
+                            <option value="1">Yes</option>
+                            <option value="0" selected>No</option>
+                        </select>
+
+                    }
+                    <span class="errMandatory">This field is required</span>
+                </div>
+            </div>
+            <div class="row newFormAddLevel">
+                <div class="col-md-2" style="padding:5px;font-size:14px;"></div>
+                <div class="col-md-7 pL0">
+                    <input type="button" class="btn btn-default" onclick="postRoleTraining()" value="Save" />
+                    <input type="button" class="btn btn-default" onclick="clearData()" value="Clear" />
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+

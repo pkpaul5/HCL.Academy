@@ -1,0 +1,223 @@
+﻿@using HCL.Academy.Model;
+@model HCL.Academy.Model.TrainingStatus
+@{
+    ViewBag.Title = "TrainingStatus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .table-striped > tr:nth-child(odd) {
+        background-color: red;
+    }
+</style>
+<script>
+    function FillTraining() {
+        var skillId = $('#ddSkillForAssmnt').val();
+        $.ajax({
+            url: "/TrainingAssessmentStatus/FillTraining",
+            type: "GET",
+            dataType: "JSON",
+            data: { Id: skillId },
+            success: function (trainings) {
+                $("#ddTraining").html(""); // clear before appending new list
+                $("#ddTraining").append($('<option></option>').val('Please Select Training').html('Please Select Training'));
+                $("#ddTraining").append($('<option></option>').val('0').html('All'));
+                $.each(trainings, function (i, training) {
+
+                    $("#ddTraining").append(
+
+                        $('<option></option>').val(training.Id).html(training.title));
+                });
+            }
+        });
+    }
+    function GetTrainingReport() {
+
+        if ($("#ddSkillForAssmnt")[0].selectedIndex == 0 || $("#ddTraining")[0].selectedIndex == 0) {
+            alert('Please select skill and training');
+            return;
+        }
+        var selectedSkill = $("#ddSkillForAssmnt").val();
+        var selectedTraining = $("#ddTraining").val();
+        var selectedProjectId = $("#project").val();
+        var PostData = {
+            skillId: selectedSkill,
+            trainingid: selectedTraining,
+            projectid:selectedProjectId
+        };
+        $.ajax({
+            type: "POST",
+            url: "/TrainingAssessmentStatus/GetTrainingAssignment",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (trainings) {
+                var tbodyHTML = "<table class='table table-bordered admin-onbrdtble' id='user - training - status'>"
+                    +"<thead>"
+                     +"<tr><th>Training Name</th><th>EmployeeId</th><th>EmailAddress</th><th>UserName</th></tr>"
+                     +"</thead ><tbody>";
+                var countHTML = "";
+
+                if (trainings.length > 0)
+                {
+                    $.each(trainings, function (key, value) {
+                        tbodyHTML += "<tr><td>" + value.TrainingName + "</td><td>" + value.EmployeeId + "</td><td>" + value.EmailAddress + "</td><td>" + value.UserName + "</td></tr>";
+                    });
+                    tbodyHTML += "</tbody ></table >";
+                    $('#dvReport').html(tbodyHTML);
+                }
+                else {
+                    tbodyHTML += "<tr><td colspan='4' style='text-align:center'>No record found</td></tr>";
+                    tbodyHTML += "</tbody ></table >";
+                    $('#dvReport').html(tbodyHTML);
+                }
+            }
+        });
+    }
+
+    function DownloadTrainingAssignment()
+    {
+        if ($("#ddSkillForAssmnt")[0].selectedIndex == 0 || $("#ddTraining")[0].selectedIndex == 0) {
+            alert('Please select skill and training');
+            return;
+        }
+        var selectedSkill = $("#ddSkillForAssmnt").val();
+        var selectedTraining = $("#ddTraining").val();
+        var selectedProjectId = $("#project").val();
+        var url = '@Url.Action("DownloadTrainingAssignment", "TrainingAssessmentStatus")?skillId=' + selectedSkill + '&trainingid=' + selectedTraining + '&projectid=' + selectedProjectId;
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+    }
+</script>
+<style>
+    table td {
+        padding: 5px;
+    }
+
+    .pL0 {
+        padding-left: 0px !important;
+    }
+
+    .pR0 {
+        padding-right: 0px !important;
+    }
+</style>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="container" style="padding-bottom:50px">
+            <div class="row">
+                <article>
+                    <header></header>
+                </article>
+                <div class="col-md-12">
+                    <h2>Training Assignment Report</h2>
+                </div>
+            </div>
+            <div class="row">
+                <article>
+                    <header></header>
+                </article>
+                <div class="col-md-12">
+                    <h1 style="margin-bottom:10px">Please select Skill and Training</h1>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-1"><h4>Skill</h4></div>
+                <div class="col-md-4 text-left">
+                    @Html.DropDownList("ddSkillForAssmnt", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                 new
+                                                 {
+                                                     @id = "ddSkillForAssmnt",
+                                                     @class = "form-control",
+                                                     @onchange = "FillTraining()"
+                                                 })
+                </div>
+                <div class="col-md-1"><h4>Training</h4></div>
+                <div class="col-md-6 text-left">
+                    @Html.DropDownList("ddTraining", new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "title"), "Please Select Training", new { @id = "ddTraining", @class = "form-control" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-1">
+                    <h4>Project</h4>
+                </div>
+                <div class="col-md-2">
+                    <select id="project" class="form-control">
+                        <option value="0">All Projects</option>
+                        @foreach (Project proj in Model.Projects)
+                        {
+                            <option value=@proj.id>@proj.projectName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-9">
+                    <div class="btn-group">
+                        <button onclick="GetTrainingReport()" class="sta-adminbt">Get Report</button>
+                        <button onclick="DownloadTrainingAssignment()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="dvReport"></div>
+                @*<table>
+                    <tbody>*@
+                        @*<tr><td colspan="5"><h2>Training Assignment Report</h2></td></tr>
+                            <tr><td colspan="5"><h1 style="margin-bottom:10px">Please select Skill and Training</h1></td></tr>*@
+                        @*<tr>
+                                <td><h4>Skill</h4></td>
+                                <td>
+                                    @Html.DropDownList("ddSkillForAssmnt", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                     new
+                                                     {
+                                                         @id = "ddSkillForAssmnt",
+                                                         @class = "form-control",
+                                                         @onchange = "FillTraining()"
+                                                     })
+                                </td>
+                                <td><h4>Training</h4></td>
+                                <td>
+                                    @Html.DropDownList("ddTraining", new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "title"), "Please Select Training", new { @id = "ddTraining", @class = "form-control" })
+                                </td>
+                                <td> </td>
+                            </tr>*@
+                        @*<tr>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button onclick="GetTrainingReport()" class="sta-adminbt">Get Report</button>
+                                        <button onclick="DownloadTrainingAssignment()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                                    </div>
+                                    <input type="button" id="btnDownLoad" class="sta-adminbt" onclick="DownloadTrainingAssignment()" value="DownLoad To Excel" />
+                                </td>
+                                <td style="font-size:12px;font-style:italic" colspan="3"></td>
+                            </tr>*@
+                        @*<tr>
+                            <td colspan="5">
+                                <table class="table table-bordered table-striped" id="user-training-status">
+                                    <thead style="background-color:#326295;color:#fff">
+                                        <tr>
+                                            <th>Training Name</th>
+                                            <th>EmployeeId</th>
+                                            <th>EmailAddress</th>
+                                            <th>UserName</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td colspan="4" style="text-align:center">No record found</td></tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>*@
+                @*</table>*@
+            </div>
+        </div>
+    </section>
+</div>

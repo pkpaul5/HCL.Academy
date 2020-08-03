@@ -1,0 +1,90 @@
+﻿@model IEnumerable<HCL.Academy.Model.SkillTraining>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div id="body">
+    @if (TempData["Message"] != null)
+    {
+        <script>
+
+        $(document).ready(function(){
+
+        alert('@TempData["Message"]');
+
+        });
+
+        </script>
+
+    }
+        <section class="content-wrapper main-content clear-fix container">
+            <div class="row"><div class="col-md-12"><h2>Maintenance Of SkillTraining</h2></div></div>
+            <div class="row form-group"><div class="col-md-12"><a href='@Url.Action("Create", "SkillTraining")' class="btn btn-primary" role="button">Add Skill Training</a></div></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered admin-onbrdtble">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.Label("Training Name")
+                                </th>
+                                <th>
+                                    @Html.Label("Skill")
+                                </th>
+                                <th>
+                                    @Html.Label("Competency Level")
+                                </th>
+                                <th>
+                                    @Html.Label("Points")
+                                </th>
+                                <th>
+                                    @Html.Label("GEO")
+                                </th>
+                                <th>
+                                    @Html.Label("Is Assessment Required")
+                                </th>
+                                <th>
+                                    @Html.Label("Is Mandatory")
+                                </th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.trainingName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.skill)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.competency)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.points)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GEO)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.isAssessmentRequired)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.isMandatory)
+                                </td>
+
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.id, trainingId = item.trainingId, skillId = item.skillId, competencyId = item.competencyLevelId, points = item.points, GEOId = item.GEOId, isAssessmentRequired = item.isAssessmentRequired, isMandatory = item.isMandatory }) |
+                                    @Html.ActionLink("Delete", "Delete", "SkillTraining", new { id = item.id, skill = item.skillId, competency = item.competencyLevelId }, new { onclick = "return confirm('Do you really want to delete the record " + "?')" })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </section>
+</div>

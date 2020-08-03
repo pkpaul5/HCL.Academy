@@ -1,0 +1,264 @@
+﻿@using HCL.Academy.Model;
+@model HCL.Academy.Model.UserOnBoarding
+@{
+    /**/
+
+    ViewBag.Title = "TrainingReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .table-striped > tr:nth-child(odd) {
+        background-color: red;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+    })
+     function Download()
+    {
+        if ($("#ddCompetanceForAssmnt")[0].selectedIndex == 0 || $("#ddSkillForAssmnt")[0].selectedIndex == 0) {
+            alert('Please select skill and competence');
+            return;
+        }
+        var selectedSkill = $("#ddSkillForAssmnt").val();
+         var selectedComp = $("#ddCompetanceForAssmnt").val();
+         var selectedProjectId = $("#project").val();
+
+         var url = '@Url.Action("DownloadReportToExcel", "TrainingReport")?skill=' + selectedSkill + '&competency=' + selectedComp + '&projectId=' + selectedProjectId;
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+    }
+    function FillCompetencePopup() {
+        var skillId = $('#ddSkillForAssmnt').val();
+        if (skillId == "0") {
+            $("#ddCompetanceForAssmnt").html(""); // clear before appending new list
+            $("#ddCompetanceForAssmnt").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+            $("#ddCompetanceForAssmnt").append($('<option></option>').val('0').html('All'));
+        }
+        else {
+            $.ajax({
+                url: "/Admin/FillCompetence",
+                type: "GET",
+                dataType: "JSON",
+                data: { Id: skillId },
+                success: function (competencies) {
+                    $("#ddCompetanceForAssmnt").html(""); // clear before appending new list
+                    $("#ddCompetanceForAssmnt").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+                    $("#ddCompetanceForAssmnt").append($('<option></option>').val('0').html('All'));
+                    $.each(competencies, function (i, competence) {
+
+                        $("#ddCompetanceForAssmnt").append(
+
+                            $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                    });
+                }
+            });
+        }
+    }
+
+    function GetTrainingReport() {
+
+        if ($("#ddSkillForAssmnt")[0].selectedIndex == 0 || $("#ddCompetanceForAssmnt")[0].selectedIndex == 0) {
+            alert('Please select skill and competence');
+            return;
+        }
+        var selectedSkill = $("#ddSkillForAssmnt").val();
+        var project = $("#project").val();
+        var selectedLevel = $("#ddCompetanceForAssmnt").val();
+        var skillName = $("#ddSkillForAssmnt option:selected").text();
+        var competencyName = $("#ddCompetanceForAssmnt option:selected").text();
+        var PostData = {
+            skillid: selectedSkill,
+            competencyid: selectedLevel,
+            skill: skillName,
+            projectid:project
+        };
+        $.ajax({
+            type: "POST",
+            url: "/TrainingReport/GetTrainingsReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                var tbodyHTML = "";
+                var countHTML = "";
+
+                if (result.userDetails.length > 0) {
+                    $.each(result.userDetails, function (key, value) {
+
+                        //var trainingStatus = value.IsTrainingCompleted == true ? "Completed" : "Work In Progress";
+                        var AdmintrainingStatus = value.AdminApprovalStatus == "Approved" ? "Completed" : "Work In Progress";
+                        //tbodyHTML += "<tr><td>" + value.Employee + "</td><td>" + value.TrainingCourse + "</td><td>" + value.competenceName + "</td><td>" + trainingStatus + "</td></tr>";
+                        tbodyHTML += "<tr><td>" + value.Employee + "</td><td>" + value.TrainingCourse + "</td><td>" + value.competenceName + "</td><td>" + value.AdminApprovalStatus + "</td></tr>";
+                    });
+                    $.each(result.counts, function (key1, value1) {
+                        countHTML += "<tr><td>" + value1.competencyLevel + "</td><td>" + value1.trainingName + "</td><td>" + value1.completedCount + "</td><td>" + value1.progressCount + "</td></tr>";
+                    });
+
+                    $('#user-training-status tbody').html(tbodyHTML);
+                    $('#user-count tbody').html(countHTML);
+                }
+                else {
+                    tbodyHTML += "<tr><td colspan='4' style='text-align:center'>No record found</td></tr>";
+                    countHTML += "<tr><td colspan='4' style='text-align:center'>No record found</td></tr>";
+                    $('#user-training-status tbody').html(tbodyHTML);
+                    $('#user-count tbody').html(countHTML);
+                }
+            }
+        });
+    }
+</script>
+<style>
+    table td {
+        padding: 5px;
+    }
+
+    .pL0 {
+        padding-left: 0px !important;
+    }
+
+    .pR0 {
+        padding-right: 0px !important;
+    }
+</style>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Training Report</h2>
+        <div class="container" style="padding-bottom:50px">            
+            <div class="row form-group">
+                <div class="col-md-1">Skill</div>
+                <div class="col-md-3 pull-left">
+                    @Html.DropDownList("ddSkillForAssmnt", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                 new
+                                                 {
+                                                     @id = "ddSkillForAssmnt",
+                                                     @class = "form-control",
+                                                     @onchange = "FillCompetencePopup()"
+                                                 })
+                </div>
+                <div class="col-md-2">Competency Level</div>
+                <div class="col-md-3 pull-left">
+                    @Html.DropDownList("ddCompetanceForAssmnt", new SelectList(Enumerable.Empty<SelectListItem>(), "CompetenceId", "CompetenceName"), "Please Select Competency Level",
+                                       new
+                                       {
+                                           @id = "ddCompetanceForAssmnt",
+                                           @class = "form-control"
+                                       })
+                </div>
+                <div class="col-md-1">Project</div>
+                <div class="col-md-2 pull-left">
+                    <select id="project" class="form-control">
+                        <option value="0">All Projects</option>
+                        @foreach (Project proj in Model.Projects)
+                        {
+                            <option value=@proj.id>@proj.projectName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            @*<div class="row">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><h4 style="font-size: 15px;">Skill</h4></td>
+                            <td>
+                                @Html.DropDownList("ddSkillForAssmnt", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                 new
+                                                 {
+                                                     @id = "ddSkillForAssmnt",
+                                                     @class = "form-control",
+                                                     @onchange = "FillCompetencePopup()"
+                                                 })
+                            </td>
+                            <td><h4 style="font-size: 15px;">Competency Level</h4></td>
+                            <td>
+                                @Html.DropDownList("ddCompetanceForAssmnt", new SelectList(Enumerable.Empty<SelectListItem>(), "CompetenceId", "CompetenceName"), "Please Select Competency Level",
+                                       new
+                                       {
+                                           @id = "ddCompetanceForAssmnt",
+                                           @class = "form-control"
+                                       })
+                            </td>
+                            <td>Project</td>
+                            <td>
+                                <select id="project" class="form-control">
+                                    <option value="0">All Projects</option>
+                                    @foreach (Project proj in Model.Projects)
+                                    {
+                                        <option value=@proj.id>@proj.projectName</option>
+                                    }
+                                </select>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>*@
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button onclick="GetTrainingReport()" class="sta-adminbt">Get Report</button>
+                        <button onclick="Download()" class="sta-adminbt"><i class="glyphicon glyphicon-download"></i> Download</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top:35px">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Number of Users assigned to the selected Skill and Competency Level</h1>
+
+                    </header>
+                </article>
+                <div class="col-md-12 pL0 pR0">
+                    <table class="table table-bordered admin-onbrdtble" id="user-count">
+                        <thead>
+                            <tr>
+                                <th>Competency Level</th>
+                                <th>Training Name</th>
+                                <th>Completed Count</th>
+                                <th>WIP Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="4" style="text-align:center">No record found</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 pL0 pR0">
+                    <article>
+                        <header>
+                            <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Users assigned to the selected Skill and Competency Level</h1>
+
+                        </header>
+                    </article>
+                    <table class="table table-bordered admin-onbrdtble" id="user-training-status">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Training Name</th>
+                                <th>Competency Level</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="4" style="text-align:center">No record found</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
